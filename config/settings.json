@@ -1,0 +1,25 @@
+{
+  "workspace": null,
+  "projectsRoot": null,
+  "frontendPort": 10000,
+  "backendPort": 15000,
+  "frontendHost": "0.0.0.0",
+  "shareCatalogOnLan": false,
+  "runtimeRegistry": null,
+  "codexPath": "codex",
+  "modelsFile": null,
+  "sessionArchiveDirectory": null,
+  "preset": "default",
+  "presets": [],
+  "approvalMode": "sandbox",
+  "sessionOperationTimeoutMs": 45000,
+  "scanIntervalMs": 15000,
+  "maxQueuedJobs": 8,
+  "maxPromptCharacters": 12000,
+  "maxJobMinutes": 45,
+  "maxOutputBytes": 2097152,
+  "discoveryDirectories": [
+    "plugins"
+  ],
+  "projectScanIntervalMs": 30000
+}

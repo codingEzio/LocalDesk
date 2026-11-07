@@ -1,0 +1,14 @@
+{
+  "id": "software",
+  "version": 1,
+  "order": 0,
+  "kind": "brewfile",
+  "path": "Brewfile",
+  "icon": "package",
+  "title": {
+    "en": "Software",
+    "zh-TW": "軟體",
+    "zh-CN": "软件"
+  },
+  "enabled": true
+}

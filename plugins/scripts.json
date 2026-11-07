@@ -1,0 +1,14 @@
+{
+  "id": "scripts",
+  "version": 1,
+  "order": 2,
+  "kind": "files",
+  "path": "scripts",
+  "icon": "terminal",
+  "title": {
+    "en": "Automations",
+    "zh-TW": "自動化",
+    "zh-CN": "自动化"
+  },
+  "enabled": true
+}

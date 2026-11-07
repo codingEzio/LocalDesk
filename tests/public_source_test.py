@@ -1,0 +1,60 @@
+"""Exercise source selection using synthetic data only."""
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import tempfile
+import unittest
+
+
+SCRIPT = Path(__file__).resolve().parents[1] / "scripts/public_source.py"
+
+
+class PublicSourceTest(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="localdesk-source-test-")
+        self.root = Path(self.temp.name) / "prep"
+        (self.root / "scripts").mkdir(parents=True)
+        (self.root / "public").mkdir()
+        shutil.copyfile(SCRIPT, self.root / "scripts/public_source.py")
+        (self.root / "README.md").write_text("PRIVATE_SYNTHETIC_FIXTURE\n")
+        (self.root / "public/README.md").write_text("Public fixture\n")
+        files = [
+            {"source": "public/README.md", "target": "README.md"},
+            {"source": "public-source.json", "target": "public-source.json"},
+            {"source": "scripts/public_source.py", "target": "scripts/public_source.py"},
+        ]
+        files.sort(key=lambda row: row["source"])
+        (self.root / "public-source.json").write_text(json.dumps({"files": files, "releaseBlockers": []}))
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def run_source(self, root, *args):
+        return subprocess.run(
+            ["python3", str(root / "scripts/public_source.py"), *args],
+            cwd=root, capture_output=True, text=True,
+        )
+
+    def test_receipt_cannot_switch_a_preparation_checkout(self):
+        (self.root / "candidate-receipt.json").write_text("{}")
+        result = self.run_source(self.root, "--export")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse((self.root / "Local/public-candidates").exists())
+
+    def test_exported_receipt_is_checked_before_target_mode(self):
+        result = self.run_source(self.root, "--export")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        candidates = list((self.root / "Local/public-candidates").glob("*/candidate-receipt.json"))
+        self.assertEqual(len(candidates), 1)
+        exported = candidates[0].parent
+        self.assertEqual((exported / "README.md").read_text(), "Public fixture\n")
+        self.assertEqual(self.run_source(exported).returncode, 0)
+        shutil.copyfile(exported / "candidate-receipt.json", self.root / "candidate-receipt.json")
+        self.assertNotEqual(self.run_source(self.root, "--export").returncode, 0)
+        (exported / "README.md").write_text("changed\n")
+        self.assertNotEqual(self.run_source(exported).returncode, 0)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,0 +1,40 @@
+<svg xml:lang="ko" xmlns="http://www.w3.org/2000/svg" width="360" height="308" viewBox="0 0 360 308" role="img" aria-labelledby="title">
+<title id="title">읽기 전용 탐색</title>
+<!--
+MIT License
+
+Copyright (c) 2026 LocalDesk contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0 0L6 3.5L0 7" fill="none" stroke="#353530"/></marker></defs>
+<rect width="360" height="308" rx="12" fill="#f4f2ec"/>
+<text x="24" y="29" fill="#353530" font-family="Apple SD Gothic Neo,Noto Sans CJK KR,Noto Sans KR,sans-serif" font-size="13" font-weight="600">읽기 전용 탐색</text>
+<rect x="24" y="56" width="312" height="56" rx="7" fill="#fffefa" stroke="#88877e"/>
+<circle cx="40" cy="84" r="3" fill="#d73628"/>
+<text x="184" y="90.0" text-anchor="middle" fill="#252522" font-family="Apple SD Gothic Neo,Noto Sans CJK KR,Noto Sans KR,sans-serif" font-size="16">선택한 로컬 폴더</text>
+<path d="M180 117V135" fill="none" stroke="#353530" marker-end="url(#arrow)"/>
+<rect x="24" y="142" width="312" height="56" rx="7" fill="#fffefa" stroke="#88877e"/>
+<circle cx="40" cy="170" r="3" fill="#d73628"/>
+<text x="184" y="176.0" text-anchor="middle" fill="#252522" font-family="Apple SD Gothic Neo,Noto Sans CJK KR,Noto Sans KR,sans-serif" font-size="16">읽기 전용 탐색</text>
+<path d="M180 203V221" fill="none" stroke="#353530" marker-end="url(#arrow)"/>
+<rect x="24" y="228" width="312" height="56" rx="7" fill="#fffefa" stroke="#88877e"/>
+<circle cx="40" cy="256" r="3" fill="#d73628"/>
+<text x="184" y="262.0" text-anchor="middle" fill="#252522" font-family="Apple SD Gothic Neo,Noto Sans CJK KR,Noto Sans KR,sans-serif" font-size="16">개요와 작업대</text>
+</svg>

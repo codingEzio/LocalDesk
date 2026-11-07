@@ -1,0 +1,14 @@
+{
+  "id": "skills",
+  "version": 1,
+  "order": 3,
+  "kind": "directories",
+  "path": "skills",
+  "icon": "sparkles",
+  "title": {
+    "en": "Agent skills",
+    "zh-TW": "代理技能",
+    "zh-CN": "代理技能"
+  },
+  "enabled": true
+}

@@ -1,0 +1,13 @@
+Local/
+.env
+.env.*
+!.env.example
+frontend/node_modules/
+frontend/dist/
+.DS_Store
+config/settings.local.json
+deploy/
+
+config/skills.local.json
+
+__pycache__/

@@ -1,0 +1,582 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "source": ".gitattributes",
+      "target": ".gitattributes"
+    },
+    {
+      "source": ".gitignore",
+      "target": ".gitignore"
+    },
+    {
+      "source": "DEPENDENCIES.md",
+      "target": "DEPENDENCIES.md"
+    },
+    {
+      "source": "LICENSE",
+      "target": "LICENSE"
+    },
+    {
+      "source": "LICENSE-STATUS.md",
+      "target": "LICENSE-STATUS.md"
+    },
+    {
+      "source": "NOTICE.md",
+      "target": "NOTICE.md"
+    },
+    {
+      "source": "backend/catalog.ts",
+      "target": "backend/catalog.ts"
+    },
+    {
+      "source": "backend/config.ts",
+      "target": "backend/config.ts"
+    },
+    {
+      "source": "backend/integrations.ts",
+      "target": "backend/integrations.ts"
+    },
+    {
+      "source": "backend/jobs.ts",
+      "target": "backend/jobs.ts"
+    },
+    {
+      "source": "backend/main.ts",
+      "target": "backend/main.ts"
+    },
+    {
+      "source": "backend/origin.ts",
+      "target": "backend/origin.ts"
+    },
+    {
+      "source": "backend/projects/backend/exclude.ts",
+      "target": "backend/projects/backend/exclude.ts"
+    },
+    {
+      "source": "backend/projects/backend/git.ts",
+      "target": "backend/projects/backend/git.ts"
+    },
+    {
+      "source": "backend/projects/backend/loc_count.ts",
+      "target": "backend/projects/backend/loc_count.ts"
+    },
+    {
+      "source": "backend/projects/backend/loc_job.ts",
+      "target": "backend/projects/backend/loc_job.ts"
+    },
+    {
+      "source": "backend/projects/backend/runtime.ts",
+      "target": "backend/projects/backend/runtime.ts"
+    },
+    {
+      "source": "backend/projects/backend/scan.ts",
+      "target": "backend/projects/backend/scan.ts"
+    },
+    {
+      "source": "backend/projects/backend/server.ts",
+      "target": "backend/projects/backend/server.ts"
+    },
+    {
+      "source": "backend/projects/db/schema.ts",
+      "target": "backend/projects/db/schema.ts"
+    },
+    {
+      "source": "backend/projects/db/store.ts",
+      "target": "backend/projects/db/store.ts"
+    },
+    {
+      "source": "backend/projects/version.ts",
+      "target": "backend/projects/version.ts"
+    },
+    {
+      "source": "backend/runtime-registry.ts",
+      "target": "backend/runtime-registry.ts"
+    },
+    {
+      "source": "backend/runtime_paths.ts",
+      "target": "backend/runtime_paths.ts"
+    },
+    {
+      "source": "backend/settings.ts",
+      "target": "backend/settings.ts"
+    },
+    {
+      "source": "backend/skills.ts",
+      "target": "backend/skills.ts"
+    },
+    {
+      "source": "backend/static-web.ts",
+      "target": "backend/static-web.ts"
+    },
+    {
+      "source": "backend/web.ts",
+      "target": "backend/web.ts"
+    },
+    {
+      "source": "backend/workbench.ts",
+      "target": "backend/workbench.ts"
+    },
+    {
+      "source": "backend/workspaces.ts",
+      "target": "backend/workspaces.ts"
+    },
+    {
+      "source": "config/agent_instructions.md",
+      "target": "config/agent_instructions.md"
+    },
+    {
+      "source": "config/settings.json",
+      "target": "config/settings.json"
+    },
+    {
+      "source": "config/skill_management.json",
+      "target": "config/skill_management.json"
+    },
+    {
+      "source": "deno.json",
+      "target": "deno.json"
+    },
+    {
+      "source": "deno.lock",
+      "target": "deno.lock"
+    },
+    {
+      "source": "docs/CONFIGURATION.md",
+      "target": "docs/CONFIGURATION.md"
+    },
+    {
+      "source": "docs/DEPENDENCY-LICENSES.json",
+      "target": "docs/DEPENDENCY-LICENSES.json"
+    },
+    {
+      "source": "docs/RELEASE.md",
+      "target": "docs/RELEASE.md"
+    },
+    {
+      "source": "docs/RELEASE.zh-CN.md",
+      "target": "docs/RELEASE.zh-CN.md"
+    },
+    {
+      "source": "docs/RELEASE.zh-TW.md",
+      "target": "docs/RELEASE.zh-TW.md"
+    },
+    {
+      "source": "docs/skills.md",
+      "target": "docs/skills.md"
+    },
+    {
+      "source": "frontend/index.html",
+      "target": "frontend/index.html"
+    },
+    {
+      "source": "frontend/package.json",
+      "target": "frontend/package.json"
+    },
+    {
+      "source": "frontend/pnpm-lock.yaml",
+      "target": "frontend/pnpm-lock.yaml"
+    },
+    {
+      "source": "frontend/public/fonts/DeparturePixelZhCompact-Regular.woff2",
+      "target": "frontend/public/fonts/DeparturePixelZhCompact-Regular.woff2"
+    },
+    {
+      "source": "frontend/public/fonts/NOTICE.md",
+      "target": "frontend/public/fonts/NOTICE.md"
+    },
+    {
+      "source": "frontend/public/fonts/OFL.txt",
+      "target": "frontend/public/fonts/OFL.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/Apache2.txt",
+      "target": "frontend/public/fonts/licenses/Apache2.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/Codicons.txt",
+      "target": "frontend/public/fonts/licenses/Codicons.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/Cubic11.txt",
+      "target": "frontend/public/fonts/licenses/Cubic11.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/Cubic11Naming.txt",
+      "target": "frontend/public/fonts/licenses/Cubic11Naming.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/DepartureMono.txt",
+      "target": "frontend/public/fonts/licenses/DepartureMono.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/Devicons.txt",
+      "target": "frontend/public/fonts/licenses/Devicons.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/DeviconsLegacy.txt",
+      "target": "frontend/public/fonts/licenses/DeviconsLegacy.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/FontAwesome.txt",
+      "target": "frontend/public/fonts/licenses/FontAwesome.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/FontAwesome7.txt",
+      "target": "frontend/public/fonts/licenses/FontAwesome7.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/FontAwesomeExtension.txt",
+      "target": "frontend/public/fonts/licenses/FontAwesomeExtension.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/FontLogos.txt",
+      "target": "frontend/public/fonts/licenses/FontLogos.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/HackExtraGlyphs.txt",
+      "target": "frontend/public/fonts/licenses/HackExtraGlyphs.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/MaterialDesign.txt",
+      "target": "frontend/public/fonts/licenses/MaterialDesign.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/NerdFonts.txt",
+      "target": "frontend/public/fonts/licenses/NerdFonts.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/NerdFontsAudit.txt",
+      "target": "frontend/public/fonts/licenses/NerdFontsAudit.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/NerdSymbols.txt",
+      "target": "frontend/public/fonts/licenses/NerdSymbols.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/NerdSymbolsReadme.txt",
+      "target": "frontend/public/fonts/licenses/NerdSymbolsReadme.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/Octicons.txt",
+      "target": "frontend/public/fonts/licenses/Octicons.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/Pomicons.txt",
+      "target": "frontend/public/fonts/licenses/Pomicons.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/PowerSymbolsIEC.txt",
+      "target": "frontend/public/fonts/licenses/PowerSymbolsIEC.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/PowerlineExtra.txt",
+      "target": "frontend/public/fonts/licenses/PowerlineExtra.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/PowerlineSymbols.txt",
+      "target": "frontend/public/fonts/licenses/PowerlineSymbols.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/Seti.txt",
+      "target": "frontend/public/fonts/licenses/Seti.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/WeatherIcons.txt",
+      "target": "frontend/public/fonts/licenses/WeatherIcons.txt"
+    },
+    {
+      "source": "frontend/public/fonts/licenses/WeatherIconsCredit.txt",
+      "target": "frontend/public/fonts/licenses/WeatherIconsCredit.txt"
+    },
+    {
+      "source": "frontend/public/fonts/provenance.json",
+      "target": "frontend/public/fonts/provenance.json"
+    },
+    {
+      "source": "frontend/src/App.svelte",
+      "target": "frontend/src/App.svelte"
+    },
+    {
+      "source": "frontend/src/ChatPanel.svelte",
+      "target": "frontend/src/ChatPanel.svelte"
+    },
+    {
+      "source": "frontend/src/DotWord.svelte",
+      "target": "frontend/src/DotWord.svelte"
+    },
+    {
+      "source": "frontend/src/Preferences.svelte",
+      "target": "frontend/src/Preferences.svelte"
+    },
+    {
+      "source": "frontend/src/Sidebar.svelte",
+      "target": "frontend/src/Sidebar.svelte"
+    },
+    {
+      "source": "frontend/src/Skills.svelte",
+      "target": "frontend/src/Skills.svelte"
+    },
+    {
+      "source": "frontend/src/Workbench.svelte",
+      "target": "frontend/src/Workbench.svelte"
+    },
+    {
+      "source": "frontend/src/chat.css",
+      "target": "frontend/src/chat.css"
+    },
+    {
+      "source": "frontend/src/locales/en.json",
+      "target": "frontend/src/locales/en.json"
+    },
+    {
+      "source": "frontend/src/locales/zh-CN.json",
+      "target": "frontend/src/locales/zh-CN.json"
+    },
+    {
+      "source": "frontend/src/locales/zh-TW.json",
+      "target": "frontend/src/locales/zh-TW.json"
+    },
+    {
+      "source": "frontend/src/main.ts",
+      "target": "frontend/src/main.ts"
+    },
+    {
+      "source": "frontend/src/sidebar.css",
+      "target": "frontend/src/sidebar.css"
+    },
+    {
+      "source": "frontend/src/style.css",
+      "target": "frontend/src/style.css"
+    },
+    {
+      "source": "frontend/src/ui.ts",
+      "target": "frontend/src/ui.ts"
+    },
+    {
+      "source": "frontend/src/workbench-copy.ts",
+      "target": "frontend/src/workbench-copy.ts"
+    },
+    {
+      "source": "frontend/src/workbench.css",
+      "target": "frontend/src/workbench.css"
+    },
+    {
+      "source": "frontend/vite.config.ts",
+      "target": "frontend/vite.config.ts"
+    },
+    {
+      "source": "plugins/configurations.json",
+      "target": "plugins/configurations.json"
+    },
+    {
+      "source": "plugins/scripts.json",
+      "target": "plugins/scripts.json"
+    },
+    {
+      "source": "plugins/services.json",
+      "target": "plugins/services.json"
+    },
+    {
+      "source": "plugins/skills.json",
+      "target": "plugins/skills.json"
+    },
+    {
+      "source": "plugins/software.json",
+      "target": "plugins/software.json"
+    },
+    {
+      "source": "plugins/utilities.json",
+      "target": "plugins/utilities.json"
+    },
+    {
+      "source": "process-compose.yaml",
+      "target": "process-compose.yaml"
+    },
+    {
+      "source": "public-source.json",
+      "target": "public-source.json"
+    },
+    {
+      "source": "public/PRIVACY-AUDIT.md",
+      "target": "docs/PRIVACY-AUDIT.md"
+    },
+    {
+      "source": "public/README.es.md",
+      "target": "README.es.md"
+    },
+    {
+      "source": "public/README.ja.md",
+      "target": "README.ja.md"
+    },
+    {
+      "source": "public/README.ko.md",
+      "target": "README.ko.md"
+    },
+    {
+      "source": "public/README.md",
+      "target": "README.md"
+    },
+    {
+      "source": "public/README.zh-CN.md",
+      "target": "README.zh-CN.md"
+    },
+    {
+      "source": "public/README.zh-TW.md",
+      "target": "README.zh-TW.md"
+    },
+    {
+      "source": "public/assets/flow-queue-en.svg",
+      "target": "assets/flow-queue-en.svg"
+    },
+    {
+      "source": "public/assets/flow-queue-es.svg",
+      "target": "assets/flow-queue-es.svg"
+    },
+    {
+      "source": "public/assets/flow-queue-ja.svg",
+      "target": "assets/flow-queue-ja.svg"
+    },
+    {
+      "source": "public/assets/flow-queue-ko.svg",
+      "target": "assets/flow-queue-ko.svg"
+    },
+    {
+      "source": "public/assets/flow-queue-zh-CN.svg",
+      "target": "assets/flow-queue-zh-CN.svg"
+    },
+    {
+      "source": "public/assets/flow-queue-zh-TW.svg",
+      "target": "assets/flow-queue-zh-TW.svg"
+    },
+    {
+      "source": "public/assets/flow-sources-en.svg",
+      "target": "assets/flow-sources-en.svg"
+    },
+    {
+      "source": "public/assets/flow-sources-es.svg",
+      "target": "assets/flow-sources-es.svg"
+    },
+    {
+      "source": "public/assets/flow-sources-ja.svg",
+      "target": "assets/flow-sources-ja.svg"
+    },
+    {
+      "source": "public/assets/flow-sources-ko.svg",
+      "target": "assets/flow-sources-ko.svg"
+    },
+    {
+      "source": "public/assets/flow-sources-zh-CN.svg",
+      "target": "assets/flow-sources-zh-CN.svg"
+    },
+    {
+      "source": "public/assets/flow-sources-zh-TW.svg",
+      "target": "assets/flow-sources-zh-TW.svg"
+    },
+    {
+      "source": "public/assets/icon-source.json",
+      "target": "assets/icon-source.json"
+    },
+    {
+      "source": "public/assets/icon.svg",
+      "target": "assets/icon.svg"
+    },
+    {
+      "source": "public/audit-source.ts",
+      "target": "scripts/audit-source.ts"
+    },
+    {
+      "source": "public/projects/loc_count.test.ts",
+      "target": "tests/projects/loc_count.test.ts"
+    },
+    {
+      "source": "public/projects/loc_profile.test.ts",
+      "target": "tests/projects/loc_profile.test.ts"
+    },
+    {
+      "source": "public/projects/loc_profile.ts",
+      "target": "backend/projects/backend/loc_profile.ts"
+    },
+    {
+      "source": "public/projects/scan.test.ts",
+      "target": "tests/projects/scan.test.ts"
+    },
+    {
+      "source": "public/service_test.ts",
+      "target": "tests/service_test.ts"
+    },
+    {
+      "source": "public/skill_categories.json",
+      "target": "config/skill_categories.json"
+    },
+    {
+      "source": "public/skills_e2e_test.ts",
+      "target": "tests/skills_e2e_test.ts"
+    },
+    {
+      "source": "scripts/doctor.ts",
+      "target": "scripts/doctor.ts"
+    },
+    {
+      "source": "scripts/public_source.py",
+      "target": "scripts/public_source.py"
+    },
+    {
+      "source": "scripts/service.ts",
+      "target": "scripts/service.ts"
+    },
+    {
+      "source": "scripts/setup.ts",
+      "target": "scripts/setup.ts"
+    },
+    {
+      "source": "scripts/start.ts",
+      "target": "scripts/start.ts"
+    },
+    {
+      "source": "tests/agent_flow_test.ts",
+      "target": "tests/agent_flow_test.ts"
+    },
+    {
+      "source": "tests/integrations_e2e_test.ts",
+      "target": "tests/integrations_e2e_test.ts"
+    },
+    {
+      "source": "tests/projects/api.test.ts",
+      "target": "tests/projects/api.test.ts"
+    },
+    {
+      "source": "tests/projects/contract.ts",
+      "target": "tests/projects/contract.ts"
+    },
+    {
+      "source": "tests/projects/db.test.ts",
+      "target": "tests/projects/db.test.ts"
+    },
+    {
+      "source": "tests/projects/git_fixture.ts",
+      "target": "tests/projects/git_fixture.ts"
+    },
+    {
+      "source": "tests/projects/git_snapshot.test.ts",
+      "target": "tests/projects/git_snapshot.test.ts"
+    },
+    {
+      "source": "tests/projects/runtime_facts.test.ts",
+      "target": "tests/projects/runtime_facts.test.ts"
+    },
+    {
+      "source": "tests/public_source_test.py",
+      "target": "tests/public_source_test.py"
+    },
+    {
+      "source": "tests/settings_test.ts",
+      "target": "tests/settings_test.ts"
+    },
+    {
+      "source": "tests/static_web_test.ts",
+      "target": "tests/static_web_test.ts"
+    }
+  ],
+  "releaseBlockers": []
+}

@@ -1,0 +1,775 @@
+{
+  "reviewDate": "2026-10-22",
+  "scope": "All 65 exact npm package records in frontend/pnpm-lock.yaml; registry license declarations. Source archive does not vendor these packages or platform binaries. Built frontend notices are generated from the packages actually bundled.",
+  "packages": [
+    {
+      "name": "@jridgewell/gen-mapping",
+      "version": "0.3.13",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40jridgewell%2Fgen-mapping/0.3.13",
+      "source": {
+        "url": "git+https://github.com/jridgewell/sourcemaps.git",
+        "type": "git",
+        "directory": "packages/gen-mapping"
+      },
+      "integrity": "sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA=="
+    },
+    {
+      "name": "@jridgewell/remapping",
+      "version": "2.3.5",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40jridgewell%2Fremapping/2.3.5",
+      "source": {
+        "url": "git+https://github.com/jridgewell/sourcemaps.git",
+        "type": "git",
+        "directory": "packages/remapping"
+      },
+      "integrity": "sha512-LI9u/+laYG4Ds1TDKSJW2YPrIlcVYOwi2fUC6xB43lueCjgxV4lffOCZCtYFiH6TNOX+tQKXx97T4IKHbhyHEQ=="
+    },
+    {
+      "name": "@jridgewell/resolve-uri",
+      "version": "3.1.2",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40jridgewell%2Fresolve-uri/3.1.2",
+      "source": {
+        "url": "git+https://github.com/jridgewell/resolve-uri.git",
+        "type": "git"
+      },
+      "integrity": "sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw=="
+    },
+    {
+      "name": "@jridgewell/sourcemap-codec",
+      "version": "1.6.0",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40jridgewell%2Fsourcemap-codec/1.6.0",
+      "source": {
+        "url": "git+https://github.com/jridgewell/sourcemaps.git",
+        "type": "git",
+        "directory": "packages/sourcemap-codec"
+      },
+      "integrity": "sha512-T7jf+5zgsZHwNJ4lvQ7/aezbyk0nNX+zJVWpmHA7VYsEx7a7qr5Rg5IbtJFqkgze5Y2sruq1RUY8Q837Od7iFw=="
+    },
+    {
+      "name": "@jridgewell/trace-mapping",
+      "version": "0.3.31",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40jridgewell%2Ftrace-mapping/0.3.31",
+      "source": {
+        "url": "git+https://github.com/jridgewell/sourcemaps.git",
+        "type": "git",
+        "directory": "packages/trace-mapping"
+      },
+      "integrity": "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="
+    },
+    {
+      "name": "@lucide/svelte",
+      "version": "1.46.0",
+      "declaredLicense": "ISC",
+      "metadataSource": "https://registry.npmjs.org/%40lucide%2Fsvelte/1.46.0",
+      "source": {
+        "url": "https://github.com/lucide-icons/lucide.git",
+        "type": "git",
+        "directory": "packages/svelte"
+      },
+      "integrity": "sha512-Ru8jDjoCVLJ7J7pPRUdY+odSBV2BI6rj68JTmT+ENq/ZwYOPGPAiKVvKz+XLyAoK4HAwlRTzZHpsMvrHfsetqg=="
+    },
+    {
+      "name": "@oxc-project/types",
+      "version": "0.149.0",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40oxc-project%2Ftypes/0.149.0",
+      "source": {
+        "url": "git+https://github.com/oxc-project/oxc.git",
+        "type": "git",
+        "directory": "npm/oxc-types"
+      },
+      "integrity": "sha512-Efcc+iF0j3Bf67YjEqIqWXbX5XddXoK/Mw4K1/JuXwRCZ8N16VR7iT23nlCc9XrveFVh/E5Rqs2StT0V8v9LdA=="
+    },
+    {
+      "name": "@rolldown/binding-android-arm-eabi",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-android-arm-eabi/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-tN5aztYkKCte4i5SIrrz5yK/HMjEuCqCSCJa418jOV8tZ1cBY3YF2otxB1ktPxzsLA1BeTqwapK0bfjxNvHJVw=="
+    },
+    {
+      "name": "@rolldown/binding-android-arm64",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-android-arm64/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-dIYTWl9XprMUiQFoc55KUyk/oS8SKYH3zFl0LTR7RT0Xj4hgSVyuJcroH8JUu8RcpF8fTB6E0aOwCkZoYPcDSQ=="
+    },
+    {
+      "name": "@rolldown/binding-darwin-arm64",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-darwin-arm64/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-PCSDQGXD2IyTEFrcgPyBM8jJuGmrbCMuoIOXdbEGVemruKACXoLQJrb+A45Z0L5t1RQkdfJprAYPkikbh7dzdA=="
+    },
+    {
+      "name": "@rolldown/binding-darwin-x64",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-darwin-x64/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-Uk7lRsGhPFHVX/sAUC6D5H9Ol30dFHd6iquokll2th3LpdJ3F5CzQB+7DHn0Ri2mG+U7k2zXiPHDrwZenXhwSA=="
+    },
+    {
+      "name": "@rolldown/binding-freebsd-x64",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-freebsd-x64/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-DjszaTEVogPqA5bYzsEeqDCQxbcp2fexQwKcRspYji2yzR68fCf+e4fx6kBSRDwX5/brZaHw/hWS9+A/+/w9sQ=="
+    },
+    {
+      "name": "@rolldown/binding-linux-arm-gnueabihf",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-arm-gnueabihf/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-zmwa7FTmdzB6aaEEuuls18H6Ap5JmJPSoPTuXixeJZV6tG40SyLkApQtz1g8ptZtiEKqj9OM0oNLPh1AgvE31Q=="
+    },
+    {
+      "name": "@rolldown/binding-linux-arm64-gnu",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-arm64-gnu/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-KdYQDPHwJVnbFwdTGMgxsI9SqblBlz6STGM+w1We/d5B8OWWidYH0MwkU/uA1wM5fIpO2MkOVxXrNzzuZhw9ew=="
+    },
+    {
+      "name": "@rolldown/binding-linux-arm64-musl",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-arm64-musl/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-jFJTifHnNPY+yzOoNZQfSIysrVyXzEQPhPnOUjmD1bcQGHH6s7c8cViKWar8YplQImE5N9JRqMCLrM2CdxOrZA=="
+    },
+    {
+      "name": "@rolldown/binding-linux-ppc64-gnu",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-ppc64-gnu/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-FhiOziBDWPBjbcmRzfLyIJnaP7AVMFXT7YCXPjXxj7wKU3vx24RjrCNN/zjvVa+N2vVoHJwCoUBvsrN/DG3zIA=="
+    },
+    {
+      "name": "@rolldown/binding-linux-s390x-gnu",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-s390x-gnu/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-WnHfADMzOV2Y55wlx1hzzQnar/wDt/VdvWSD99r18Mz9ylNieIGOkRx3UV21h7m/eJvjySYJkO26VvGNFkwsIQ=="
+    },
+    {
+      "name": "@rolldown/binding-linux-x64-gnu",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-x64-gnu/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-H9tRr5ibfXFVLxbPOseVewewFpl28zcEdjRDt2FTUZU7odxP0gEv1ki4/kGmcGOh78oRwZuuQllGLZ9zTJp84g=="
+    },
+    {
+      "name": "@rolldown/binding-linux-x64-musl",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-x64-musl/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-UefiqfM3D6IVNlZ8tSGs9+Ejjud2T+oxO0IHADU45Y+lyEjD2dVFyZHbkfX0LUb5Zugo/oIv1eCO/KVYhgYJYA=="
+    },
+    {
+      "name": "@rolldown/binding-openharmony-arm64",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-openharmony-arm64/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-637Ke4kWSy6rp9cxQ9gMOXlxPgIw/c1beASV4M//3+9I4uwBVOOl74G+e3zyU3u19U7RkRl/HuewixZ/Z6+Rjg=="
+    },
+    {
+      "name": "@rolldown/binding-win32-arm64-msvc",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-win32-arm64-msvc/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-xWBkPOF1Q9k/Gv1nQXnVdLxKu74jXppuOM4Z3mnypVUJJJwLsMl7hNJGRAUJoG8A5MgOI1ACKM+wBFxSJzKy4A=="
+    },
+    {
+      "name": "@rolldown/binding-win32-x64-msvc",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fbinding-win32-x64-msvc/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-uz2ZvfgXbxqNwijjjbxrnvALwpyODDcgc1T1N8N3rf/DXKQmaFwmB4LX4yyjggpwN2obdQLb2rgirX5ffCWYng=="
+    },
+    {
+      "name": "@rolldown/pluginutils",
+      "version": "1.0.1",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40rolldown%2Fpluginutils/1.0.1",
+      "source": {
+        "url": "git+https://github.com/rolldown/plugins.git",
+        "type": "git",
+        "directory": "packages/pluginutils"
+      },
+      "integrity": "sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw=="
+    },
+    {
+      "name": "@sveltejs/acorn-typescript",
+      "version": "1.0.13",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40sveltejs%2Facorn-typescript/1.0.13",
+      "source": {
+        "url": "git+https://github.com/sveltejs/acorn-typescript.git",
+        "type": "git"
+      },
+      "integrity": "sha512-wgKggnhZVL9Bfx1OaKKTrYY9BFRk6C8UAkQNUcIv1+llzYrIqy+RZm5HPKzn0NpEBvTVhTqB4kQyllZywsRBRQ=="
+    },
+    {
+      "name": "@sveltejs/vite-plugin-svelte",
+      "version": "7.3.0",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40sveltejs%2Fvite-plugin-svelte/7.3.0",
+      "source": {
+        "url": "git+https://github.com/sveltejs/vite-plugin-svelte.git",
+        "type": "git",
+        "directory": "packages/vite-plugin-svelte"
+      },
+      "integrity": "sha512-QbRoJyD92e9R0ufeQIWRHrCC0ObcqSv/aBDdrQMoU+sypav3cDx5wytdQ6GLdXjEMO6xjrXGzfkUygng8JMv0A=="
+    },
+    {
+      "name": "@types/estree",
+      "version": "1.0.9",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/%40types%2Festree/1.0.9",
+      "source": {
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "type": "git",
+        "directory": "types/estree"
+      },
+      "integrity": "sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg=="
+    },
+    {
+      "name": "acorn",
+      "version": "8.18.0",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/acorn/8.18.0",
+      "source": {
+        "url": "git+https://github.com/acornjs/acorn.git",
+        "type": "git"
+      },
+      "integrity": "sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ=="
+    },
+    {
+      "name": "aria-query",
+      "version": "5.3.1",
+      "declaredLicense": "Apache-2.0",
+      "metadataSource": "https://registry.npmjs.org/aria-query/5.3.1",
+      "source": {
+        "url": "git+https://github.com/A11yance/aria-query.git",
+        "type": "git"
+      },
+      "integrity": "sha512-Z/ZeOgVl7bcSYZ/u/rh0fOpvEpq//LZmdbkXyc7syVzjPAhfOa9ebsdTSjEBDU4vs5nC98Kfduj1uFo0qyET3g=="
+    },
+    {
+      "name": "axobject-query",
+      "version": "4.1.0",
+      "declaredLicense": "Apache-2.0",
+      "metadataSource": "https://registry.npmjs.org/axobject-query/4.1.0",
+      "source": {
+        "url": "git+https://github.com/A11yance/axobject-query.git",
+        "type": "git"
+      },
+      "integrity": "sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ=="
+    },
+    {
+      "name": "clsx",
+      "version": "2.1.1",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/clsx/2.1.1",
+      "source": {
+        "url": "git+https://github.com/lukeed/clsx.git",
+        "type": "git"
+      },
+      "integrity": "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA=="
+    },
+    {
+      "name": "deepmerge",
+      "version": "4.3.1",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/deepmerge/4.3.1",
+      "source": {
+        "url": "git://github.com/TehShrike/deepmerge.git",
+        "type": "git"
+      },
+      "integrity": "sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A=="
+    },
+    {
+      "name": "detect-libc",
+      "version": "2.1.2",
+      "declaredLicense": "Apache-2.0",
+      "metadataSource": "https://registry.npmjs.org/detect-libc/2.1.2",
+      "source": {
+        "url": "git://github.com/lovell/detect-libc.git",
+        "type": "git"
+      },
+      "integrity": "sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ=="
+    },
+    {
+      "name": "devalue",
+      "version": "5.9.4",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/devalue/5.9.4",
+      "source": {
+        "url": "git+https://github.com/sveltejs/devalue.git",
+        "type": "git"
+      },
+      "integrity": "sha512-sPAT4pztbu6586/hrhOnMKS17IJrvg12mXiSPSS3W5qDeN2RGgvZ0diZCm31dBbnevfVmujNO3IM2wrS4Y2Rhg=="
+    },
+    {
+      "name": "esm-env",
+      "version": "1.2.2",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/esm-env/1.2.2",
+      "source": {
+        "url": "git+https://github.com/benmccann/esm-env.git",
+        "type": "git"
+      },
+      "integrity": "sha512-Epxrv+Nr/CaL4ZcFGPJIYLWFom+YeV1DqMLHJoEd9SYRxNbaFruBwfEX/kkHUJf55j2+TUbmDcmuilbP1TmXHA=="
+    },
+    {
+      "name": "esrap",
+      "version": "2.3.7",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/esrap/2.3.7",
+      "source": {
+        "url": "git+https://github.com/sveltejs/esrap.git",
+        "type": "git"
+      },
+      "integrity": "sha512-n2nf7fZR3c9yXf0BPEuHuXqT+KW0SJVj4cN5FMEkpCZ3scLjOQWpiccyCxVzCC2q1wubTghuEGzngJY/7Ah0Ow=="
+    },
+    {
+      "name": "fdir",
+      "version": "6.5.0",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/fdir/6.5.0",
+      "source": {
+        "url": "git+https://github.com/thecodrr/fdir.git",
+        "type": "git"
+      },
+      "integrity": "sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg=="
+    },
+    {
+      "name": "fsevents",
+      "version": "2.3.3",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/fsevents/2.3.3",
+      "source": {
+        "url": "git+https://github.com/fsevents/fsevents.git",
+        "type": "git"
+      },
+      "integrity": "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw=="
+    },
+    {
+      "name": "is-reference",
+      "version": "3.0.3",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/is-reference/3.0.3",
+      "source": {
+        "url": "git+https://github.com/Rich-Harris/is-reference.git",
+        "type": "git"
+      },
+      "integrity": "sha512-ixkJoqQvAP88E6wLydLGGqCJsrFUnqoH6HnaczB8XmDH1oaWU+xxdptvikTgaEhtZ53Ky6YXiBuUI2WXLMCwjw=="
+    },
+    {
+      "name": "lightningcss-android-arm64",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss-android-arm64/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-gEpRTalKdosp4Bb8qWtc2iOgE5SeIHlpS1up9bFq2wAyYhl1UdTObYiHe98zEM9SQvSoqQZ1IQD0JNpg3Ml5pg=="
+    },
+    {
+      "name": "lightningcss-darwin-arm64",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss-darwin-arm64/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-Sciaz8eenNTKn9b3t7+xr0ipTp9YxKQY4npwQ3mrRuL0BAVHBLyZxofhaKBAVtzmtRZ/zTyo0/to4B1uWG/Djg=="
+    },
+    {
+      "name": "lightningcss-darwin-x64",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss-darwin-x64/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-Z5UPAxzrjlWNNyGy6i65cJzzvgJ5D3T6wMvs+gWpY9d7qRhANrxqAp6LhxIgZhWEw18RfJTGcRxjuLIBr+m8XQ=="
+    },
+    {
+      "name": "lightningcss-freebsd-x64",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss-freebsd-x64/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-QQM/Ti/hQajJwCY+RiWuCZ9sdtI/XQk7nDK5vC8kkdwixezOlDgvDx7+RT+QjK6FcFT4MpsuoBnHIo/O3StRRg=="
+    },
+    {
+      "name": "lightningcss-linux-arm-gnueabihf",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss-linux-arm-gnueabihf/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-N7FVBe6iS24MlM6R/4RBTxGhQheZGs7tiQ9U32UtF75NzP5Q7xWPRqLBCKxlRQRk3rY1jCIPLzx7WzOhuUIRLQ=="
+    },
+    {
+      "name": "lightningcss-linux-arm64-gnu",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss-linux-arm64-gnu/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-j2v/itmy4HlNxlc6voKXYgBqNi0Ng2LShg4z7GufpEgs05P+2suBVyi9I6YHq5uoVFx9ETin3eCEhLVyXGQnKg=="
+    },
+    {
+      "name": "lightningcss-linux-arm64-musl",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss-linux-arm64-musl/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-yiO5ROMuYQgXbC60yjZU5CYSFZGKXL0HFATXt9mHJn1+zW55oCtMI9NfcVhYLMFDL7gV7oBPon/EmMMGg2OvtQ=="
+    },
+    {
+      "name": "lightningcss-linux-x64-gnu",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss-linux-x64-gnu/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-ar+Ju7LmcN0Jo4FpL4hpFybwNG9/3A/Br5KW2n2jyODg3MEZXaDYADdemoNS+BDNfMgKvylJLj4S5tyRActuAg=="
+    },
+    {
+      "name": "lightningcss-linux-x64-musl",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss-linux-x64-musl/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-RYiYbkokw0trfKqqzfF55lginwEPrD3OJDfTuJzFs1MK6iFnDenaz1fqLLtX4ITG3OktJQXOeTaw1awrBAlZPw=="
+    },
+    {
+      "name": "lightningcss-win32-arm64-msvc",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss-win32-arm64-msvc/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-1K+MPfLSFVpphzpdbfkhlWk6wBrTObBzS2T6db10PNOZgR9GoVsAWzwNyuhUYYbTp23j+4RrncfujZ4uAzXvwA=="
+    },
+    {
+      "name": "lightningcss-win32-x64-msvc",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss-win32-x64-msvc/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-OlEICDx/Xl0FqSp4bry8zFnCvGpig3Gl4gCquvYwHuqJKEC1+n9NgDniFvqHGmMv1ZkqDJrDqKKSykTDX+ehuA=="
+    },
+    {
+      "name": "lightningcss",
+      "version": "1.33.0",
+      "declaredLicense": "MPL-2.0",
+      "metadataSource": "https://registry.npmjs.org/lightningcss/1.33.0",
+      "source": {
+        "url": "git+https://github.com/parcel-bundler/lightningcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-WkUDrojuJs0xkgGf2udWxa3yGBRxPtxUkB79i6aCZLRgc7PM8fZe9TosfPDcvEpQZbuFASnHYmRLBLUbmLOIIA=="
+    },
+    {
+      "name": "locate-character",
+      "version": "3.0.0",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/locate-character/3.0.0",
+      "source": {
+        "url": "git+https://gitlab.com/Rich-Harris/locate-character.git",
+        "type": "git"
+      },
+      "integrity": "sha512-SW13ws7BjaeJ6p7Q6CO2nchbYEc3X3J6WrmTTDto7yMPqVSZTUyY5Tjbid+Ab8gLnATtygYtiDIJGQRRn2ZOiA=="
+    },
+    {
+      "name": "magic-string",
+      "version": "0.30.21",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/magic-string/0.30.21",
+      "source": {
+        "url": "git+https://github.com/Rich-Harris/magic-string.git",
+        "type": "git"
+      },
+      "integrity": "sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ=="
+    },
+    {
+      "name": "magic-string",
+      "version": "1.4.1",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/magic-string/1.4.1",
+      "source": {
+        "url": "git+https://github.com/Rich-Harris/magic-string.git",
+        "type": "git"
+      },
+      "integrity": "sha512-8lyCu36ErXR0J9uaGKlKQoiLZKmtI63YGLE8G2o9jyRPdr4X47LusSOwgOJOzcVtp81fTAAjxR7BwKz682Jhow=="
+    },
+    {
+      "name": "nanoid",
+      "version": "3.3.19",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/nanoid/3.3.19",
+      "source": {
+        "url": "git+https://github.com/ai/nanoid.git",
+        "type": "git"
+      },
+      "integrity": "sha512-Y2tUNy4ouw6tq5oDSKeQYGOyhkUBhNOcGV/02KC+6kd9eDGqdZd++mjMiIDilrBYvjEnCYvVtsuHCuP+okSfug=="
+    },
+    {
+      "name": "obug",
+      "version": "2.2.1",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/obug/2.2.1",
+      "source": {
+        "url": "git+https://github.com/sxzz/obug.git",
+        "type": "git"
+      },
+      "integrity": "sha512-XrsrhT5sybtKI6wakr2SPOlGZWWYbUXZ7a0jT8/QOeAPau+1X/bSegNe5YR75oJmEZQbKningirmGOEJCIk61Q=="
+    },
+    {
+      "name": "picocolors",
+      "version": "1.1.1",
+      "declaredLicense": "ISC",
+      "metadataSource": "https://registry.npmjs.org/picocolors/1.1.1",
+      "source": {
+        "url": "git+https://github.com/alexeyraspopov/picocolors.git",
+        "type": "git"
+      },
+      "integrity": "sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA=="
+    },
+    {
+      "name": "picomatch",
+      "version": "4.0.7",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/picomatch/4.0.7",
+      "source": {
+        "url": "git+https://github.com/micromatch/picomatch.git",
+        "type": "git"
+      },
+      "integrity": "sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA=="
+    },
+    {
+      "name": "postcss",
+      "version": "8.5.28",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/postcss/8.5.28",
+      "source": {
+        "url": "git+https://github.com/postcss/postcss.git",
+        "type": "git"
+      },
+      "integrity": "sha512-RRuzqDtt5Y9h3quz5hWhK+TPnsmVs6WwSU6LkJMeY4HstUEDuYTG8UJSdawMRzmzAtV+KEoG8N3Qg2qLy5vM/A=="
+    },
+    {
+      "name": "rolldown",
+      "version": "1.2.8",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/rolldown/1.2.8",
+      "source": {
+        "url": "git+https://github.com/rolldown/rolldown.git",
+        "type": "git",
+        "directory": "packages/rolldown"
+      },
+      "integrity": "sha512-Z67nTmhZe7anqnM/EjI392w5i/ANUinjip7QYsOyN37oayduxt3ksdX0hf5OOamkAd53BiIHfbfSzfUmzKFQqQ=="
+    },
+    {
+      "name": "source-map-js",
+      "version": "1.2.2",
+      "declaredLicense": "BSD-3-Clause",
+      "metadataSource": "https://registry.npmjs.org/source-map-js/1.2.2",
+      "source": {
+        "url": "git+https://github.com/7rulnik/source-map-js.git",
+        "type": "git"
+      },
+      "integrity": "sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw=="
+    },
+    {
+      "name": "svelte",
+      "version": "5.57.0",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/svelte/5.57.0",
+      "source": {
+        "url": "git+https://github.com/sveltejs/svelte.git",
+        "type": "git",
+        "directory": "packages/svelte"
+      },
+      "integrity": "sha512-NdbDn7fl4be1ViUG0oq/lvG6OZy3oENolV2ONjiqqsfVoeAfzaQAKUcEX3MrQod/Bebv1PgwET9rfXhgn9s4Kg=="
+    },
+    {
+      "name": "tinyglobby",
+      "version": "0.2.17",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/tinyglobby/0.2.17",
+      "source": {
+        "url": "git+https://github.com/SuperchupuDev/tinyglobby.git",
+        "type": "git"
+      },
+      "integrity": "sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g=="
+    },
+    {
+      "name": "vite",
+      "version": "8.3.0",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/vite/8.3.0",
+      "source": {
+        "url": "git+https://github.com/vitejs/vite.git",
+        "type": "git",
+        "directory": "packages/vite"
+      },
+      "integrity": "sha512-lhZBVvEHefgE+HQZC9O7EBJgCU/nVzFNl7vkS4RE0APtWLP02/8QVIkQtzBxPquh7lq5/78NHipTj7ODQ6XuyQ=="
+    },
+    {
+      "name": "vitefu",
+      "version": "1.1.3",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/vitefu/1.1.3",
+      "source": {
+        "url": "git+https://github.com/svitejs/vitefu.git",
+        "type": "git"
+      },
+      "integrity": "sha512-ub4okH7Z5KLjb6hDyjqrGXqWtWvoYdU3IGm/NorpgHncKoLTCfRIbvlhBm7r0YstIaQRYlp4yEbFqDcKSzXSSg=="
+    },
+    {
+      "name": "zimmerframe",
+      "version": "1.1.5",
+      "declaredLicense": "MIT",
+      "metadataSource": "https://registry.npmjs.org/zimmerframe/1.1.5",
+      "source": {
+        "url": "git+https://github.com/sveltejs/zimmerframe.git",
+        "type": "git"
+      },
+      "integrity": "sha512-msJxIvYDYcoNL+PJsu+7qmpDWsYmAxTY+2TNYXXF0hzBzBk0BMecOqDOG/EckUoKCuKwObfbugIl8QpqHDXeFA=="
+    }
+  ],
+  "counts": {
+    "MIT": 47,
+    "ISC": 2,
+    "Apache-2.0": 3,
+    "MPL-2.0": 12,
+    "BSD-3-Clause": 1
+  },
+  "jsr": [
+    {
+      "name": "@std/assert",
+      "version": "1.0.19",
+      "declaredLicense": "MIT",
+      "source": "https://jsr.io/@std/assert/1.0.19"
+    },
+    {
+      "name": "@std/internal",
+      "version": "1.0.14",
+      "declaredLicense": "MIT",
+      "source": "https://jsr.io/@std/internal/1.0.14"
+    },
+    {
+      "name": "@std/yaml",
+      "version": "1.0.12",
+      "declaredLicense": "MIT",
+      "source": "https://jsr.io/@std/yaml/1.0.12"
+    }
+  ]
+}

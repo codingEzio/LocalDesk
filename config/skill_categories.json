@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "uncategorized",
+      "title": {
+        "en": "Uncategorized",
+        "zh-CN": "未分类",
+        "zh-TW": "未分類"
+      }
+    }
+  ],
+  "assignments": {}
+}

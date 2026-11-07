@@ -1,0 +1,218 @@
+import { assertEquals } from "@std/assert";
+import { dirname, join } from "node:path";
+import {
+  collectHints,
+  countProject,
+  countSourceLines,
+  formatLocCompact,
+} from "../../backend/projects/backend/loc_count.ts";
+
+function writeFile(root: string, relative: string, content: string) {
+  const path = join(root, ...relative.split("/"));
+  Deno.mkdirSync(dirname(path), { recursive: true });
+  Deno.writeTextFileSync(path, content);
+}
+
+Deno.test("countSourceLines counts code, not blanks or whole-line comments", () => {
+  assertEquals(
+    countSourceLines(
+      [
+        "const x = 1;",
+        "",
+        "  // comment",
+        "const y = 2; // still code",
+        "/*",
+        " block",
+        "*/",
+        "return x;",
+      ].join("\n"),
+      "c",
+    ),
+    { code: 3, comment: 4, blank: 1 },
+  );
+  assertEquals(
+    countSourceLines("# header\n\ndef run():\n    return 1\n", "hash"),
+    { code: 2, comment: 1, blank: 1 },
+  );
+});
+
+Deno.test("countProject splits core and test and never reads vendor trees", async () => {
+  const root = Deno.makeTempDirSync();
+  try {
+    writeFile(root, "frontend/src/app.ts", "export const n = 1;\n");
+    writeFile(root, "backend/server.ts", "export const ok = true;\n");
+    writeFile(root, "tests/api.test.ts", "Deno.test('x', () => {});\n");
+    writeFile(
+      root,
+      "frontend/node_modules/svelte/index.js",
+      "export default 1;\n".repeat(5000),
+    );
+    writeFile(
+      root,
+      "frontend/public/ocr/worker.min.js",
+      "var fake=1;\n".repeat(2000),
+    );
+    writeFile(root, "version.ts", "export const VERSION = '1';\n");
+    const counted = await countProject("ExampleWeb", root);
+    assertEquals(counted?.profile, "web-svelte");
+    assertEquals(counted?.core, 3);
+    assertEquals(counted?.test, 1);
+    assertEquals(
+      counted?.files.every((file) =>
+        !file.includes("node_modules") && !file.includes("/ocr/")
+      ),
+      true,
+    );
+  } finally {
+    Deno.removeSync(root, { recursive: true });
+  }
+});
+
+Deno.test("sitekit fixture does not double-count generated extension trees", async () => {
+  const root = Deno.makeTempDirSync();
+  try {
+    writeFile(root, "src/sites.js", "export const sites = [];\n");
+    writeFile(root, "scripts/build.js", "export function build() {}\n");
+    writeFile(
+      root,
+      "extension_chrome/background.js",
+      "console.log('generated');\n".repeat(40),
+    );
+    writeFile(
+      root,
+      "extension_safari/web-extension/popup.js",
+      "console.log('generated');\n".repeat(40),
+    );
+    writeFile(
+      root,
+      "extension_safari/host/ExampleSite/ExampleSite/AppDelegate.swift",
+      "import Cocoa\n@main\nclass AppDelegate: NSObject {}\n",
+    );
+    writeFile(root, "tests/sites.test.js", "Deno.test('sites', () => {});\n");
+    const counted = await countProject("ExampleSite", root);
+    assertEquals(counted?.profile, "sitekit");
+    assertEquals(counted?.core, 5);
+    assertEquals(counted?.test, 1);
+    assertEquals(
+      counted?.files.some((file) => file.startsWith("extension_chrome/")),
+      false,
+    );
+  } finally {
+    Deno.removeSync(root, { recursive: true });
+  }
+});
+
+Deno.test("rust fixture ignores target and sqlite bytes", async () => {
+  const root = Deno.makeTempDirSync();
+  try {
+    writeFile(root, "Cargo.toml", "[package]\nname='atlas'\n");
+    writeFile(root, "src/lib.rs", "pub fn ping() -> u8 { 1 }\n");
+    writeFile(root, "tests/api.rs", "#[test]\nfn ok() {}\n");
+    writeFile(root, "target/release/lib.rs", "fn noise() {}\n".repeat(80));
+    Deno.mkdirSync(join(root, "native", "database"), { recursive: true });
+    Deno.writeFileSync(
+      join(root, "native", "database", "atlas.sqlite3"),
+      new Uint8Array(1024),
+    );
+    const counted = await countProject("ExampleRust", root);
+    assertEquals(counted?.profile, "rust");
+    assertEquals(counted?.core, 1);
+    assertEquals(counted?.test, 2);
+    assertEquals(
+      counted?.files.some((file) => file.startsWith("target/")),
+      false,
+    );
+  } finally {
+    Deno.removeSync(root, { recursive: true });
+  }
+});
+
+Deno.test("hwstatus reports mac and firmware parts", async () => {
+  const root = Deno.makeTempDirSync();
+  try {
+    writeFile(root, "Mac/Package.swift", "// synthetic package\n");
+    writeFile(root, "Mac/Sources/App.swift", "struct App {}\n");
+    writeFile(root, "main/main.c", "int main() { return 0; }\n");
+    writeFile(
+      root,
+      "managed_components/lvgl__lvgl/src/lv.c",
+      "void lv(void) {}\n".repeat(20),
+    );
+    const counted = await countProject("ExampleDevice", root);
+    assertEquals(counted?.core, 2);
+    assertEquals(
+      counted?.parts,
+      [
+        { id: "mac", core: 1 },
+        { id: "firmware", core: 1 },
+      ],
+    );
+  } finally {
+    Deno.removeSync(root, { recursive: true });
+  }
+});
+
+Deno.test("unchanged fingerprint reuses the previous count", async () => {
+  const root = Deno.makeTempDirSync();
+  try {
+    writeFile(root, "frontend/src/a.ts", "export const a = 1;\n");
+    const first = await countProject("ExampleProject", root);
+    const second = await countProject(
+      "ExampleProject",
+      root,
+      first ?? undefined,
+    );
+    assertEquals(second?.counted_at, first?.counted_at);
+    assertEquals(second?.fingerprint, first?.fingerprint);
+    writeFile(
+      root,
+      "frontend/src/a.ts",
+      "export const a = 1;\nexport const b = 2;\n",
+    );
+    const third = await countProject(
+      "ExampleProject",
+      root,
+      first ?? undefined,
+    );
+    assertEquals(third?.core, 2);
+    if (third?.counted_at === first?.counted_at) {
+      throw new Error("changed source must recount");
+    }
+  } finally {
+    Deno.removeSync(root, { recursive: true });
+  }
+});
+
+Deno.test("skipped projects return null instead of a zero loc", async () => {
+  const root = Deno.makeTempDirSync();
+  try {
+    writeFile(root, "kernel/main.c", "int main() { return 0; }\n");
+    assertEquals(await countProject("_archive", root), null);
+    assertEquals(await countProject(".hidden", root), null);
+  } finally {
+    Deno.removeSync(root, { recursive: true });
+  }
+});
+
+Deno.test("collectHints sees frontend/src and Cargo.toml", async () => {
+  const root = Deno.makeTempDirSync();
+  try {
+    Deno.mkdirSync(join(root, "frontend", "src"), { recursive: true });
+    Deno.writeTextFileSync(join(root, "Cargo.toml"), "[package]\n");
+    const hints = await collectHints(root);
+    assertEquals(hints.includes("frontend/src"), true);
+    assertEquals(hints.includes("Cargo.toml"), true);
+  } finally {
+    Deno.removeSync(root, { recursive: true });
+  }
+});
+
+Deno.test("formatLocCompact keeps a short card value", () => {
+  assertEquals(formatLocCompact(847), "847");
+  assertEquals(formatLocCompact(1000), "1k");
+  assertEquals(formatLocCompact(1500), "1.5k");
+  assertEquals(formatLocCompact(12341), "12k");
+});
+
+// Machine-specific assertions for retired fixture directories
+// are superseded by the fixture-based web-svelte/sitekit exclusion cases above.

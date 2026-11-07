@@ -1,0 +1,9 @@
+{
+  "maxScanFiles": 30000,
+  "maxScanBytes": 134217728,
+  "maxFileBytes": 2097152,
+  "maxChangedFiles": 256,
+  "maxPlanBytes": 16777216,
+  "maxRetainedPlans": 20,
+  "previewTtlMs": 900000
+}

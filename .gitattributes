@@ -1,0 +1,2 @@
+# Preserve upstream font license bytes, including their original CRLF/spacing.
+frontend/public/fonts/licenses/** -whitespace

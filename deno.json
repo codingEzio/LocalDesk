@@ -1,0 +1,45 @@
+{
+  "nodeModulesDir": "none",
+  "compilerOptions": {
+    "lib": [
+      "deno.ns",
+      "dom",
+      "esnext"
+    ]
+  },
+  "tasks": {
+    "api": "deno run -A backend/main.ts",
+    "web": "deno run -A backend/web.ts",
+    "check": "deno check backend/main.ts backend/web.ts",
+    "build": "pnpm --dir frontend build",
+    "setup": "deno run -A scripts/setup.ts",
+    "start": "deno run -A scripts/start.ts",
+    "test": "deno test -A tests",
+    "audit": "deno run --allow-read --allow-run=git scripts/audit-source.ts",
+    "doctor": "deno run --allow-read --allow-env --allow-run scripts/doctor.ts",
+    "service": "deno run -A scripts/service.ts",
+    "source-check": "python3 scripts/public_source.py",
+    "source-export": "python3 scripts/public_source.py --export"
+  },
+  "fmt": {
+    "exclude": [
+      "frontend/node_modules",
+      "frontend/dist",
+      "Local",
+      "frontend/public/fonts",
+      "frontend/pnpm-lock.yaml"
+    ]
+  },
+  "lint": {
+    "exclude": [
+      "frontend/node_modules",
+      "frontend/dist",
+      "Local",
+      "frontend/public/fonts"
+    ]
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "@std/yaml": "jsr:@std/yaml@1.0.12"
+  }
+}

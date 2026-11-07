@@ -1,0 +1,14 @@
+{
+  "id": "services",
+  "version": 1,
+  "order": 4,
+  "kind": "directories",
+  "path": "services",
+  "icon": "radio",
+  "title": {
+    "en": "Services",
+    "zh-TW": "服務",
+    "zh-CN": "服务"
+  },
+  "enabled": true
+}

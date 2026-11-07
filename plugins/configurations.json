@@ -1,0 +1,14 @@
+{
+  "id": "configurations",
+  "version": 1,
+  "order": 1,
+  "kind": "directories",
+  "path": "config",
+  "icon": "sliders",
+  "title": {
+    "en": "Configurations",
+    "zh-TW": "設定",
+    "zh-CN": "配置"
+  },
+  "enabled": true
+}

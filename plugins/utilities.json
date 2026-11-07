@@ -1,0 +1,14 @@
+{
+  "id": "utilities",
+  "version": 1,
+  "order": 5,
+  "kind": "directories",
+  "path": "tools",
+  "icon": "wrench",
+  "title": {
+    "en": "Utilities",
+    "zh-TW": "工具",
+    "zh-CN": "工具"
+  },
+  "enabled": true
+}

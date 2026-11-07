@@ -1,0 +1,36 @@
+version: "0.5"
+is_strict: true
+is_tui_disabled: true
+log_level: info
+log_length: 300
+log_location: Local/process-compose.log
+log_configuration:
+  rotation:
+    max_size_mb: 5
+    max_age_days: 7
+    max_backups: 2
+    compress: true
+processes:
+  localdesk-api:
+    description: LocalDesk loopback API
+    command: exec "$LOCALDESK_DENO" run -A backend/main.ts
+    availability:
+      restart: always
+      backoff_seconds: 2
+    shutdown:
+      signal: 15
+      timeout_seconds: 15
+  localdesk-web:
+    description: LocalDesk LAN-bound shell; private catalog by default
+    environment:
+      - "LOCALDESK_HOST=0.0.0.0"
+    command: exec "$LOCALDESK_DENO" run -A backend/web.ts
+    depends_on:
+      localdesk-api:
+        condition: process_started
+    availability:
+      restart: always
+      backoff_seconds: 2
+    shutdown:
+      signal: 15
+      timeout_seconds: 15

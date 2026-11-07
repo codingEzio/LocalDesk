@@ -1,0 +1,226 @@
+:root {
+  --desk-rail: 178px;
+}
+.shell {
+  grid-template-columns: var(--desk-rail) minmax(0,1fr);
+}
+.desk-sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 26px 16px 16px;
+  border-right: 1px solid var(--line);
+  background: var(--bg);
+  gap: 23px;
+  box-sizing: border-box;
+  width: var(--desk-rail);
+  z-index: 3;
+}
+.desk-brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.05;
+  letter-spacing: 1.2px;
+  text-decoration: none;
+}
+.desk-glyph {
+  display: grid;
+  grid-template-columns: repeat(3,5px);
+  gap: 5px;
+  flex-shrink: 0;
+}
+.desk-glyph i {
+  width: 5px;
+  height: 5px;
+  background: var(--red);
+  border-radius: 50%;
+}
+.desk-label {
+  font: 8px var(--mono);
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.desk-sidebar nav {
+  display: grid;
+  gap: 5px;
+  margin-top: -11px;
+}
+.desk-sidebar nav a {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  text-decoration: none;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: background 120ms,color 120ms;
+}
+.desk-sidebar nav a.chosen {
+  background: var(--ink);
+  color: var(--bg);
+}
+.desk-sidebar nav a:hover:not(.chosen) {
+  background: var(--soft);
+  color: var(--ink);
+}
+.desk-sources {
+  display: grid;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+.desk-sources > .desk-label {
+  margin-bottom: 5px;
+}
+.desk-sources button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 10px;
+  padding: 6px 3px;
+  text-align: left;
+  min-width: 0;
+}
+.desk-sources button i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ink);
+  flex-shrink: 0;
+}
+.desk-sources button.muted {
+  opacity: .5;
+}
+.desk-sources button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.desk-sources button small {
+  margin-left: auto;
+  font: 8px var(--mono);
+  color: var(--muted);
+}
+.desk-bottom {
+  margin-top: auto;
+  display: grid;
+  gap: 10px;
+}
+.desk-bottom > .desk-label i {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--red);
+  margin-right: 6px;
+}
+.desk-bottom > code {
+  font: 24px var(--mono);
+  letter-spacing: -1px;
+}
+.desk-settings {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  text-align: left;
+  font-size: 11px;
+  padding: 9px 3px;
+}
+@media (max-width:1000px) {
+  :root {
+    --desk-rail: 60px;
+  }
+  .shell {
+    grid-template-columns: var(--desk-rail) minmax(0,1fr);
+  }
+  .desk-sidebar {
+    padding: 22px 8px;
+    gap: 27px;
+  }
+  .desk-brand {
+    justify-content: center;
+  }
+  .desk-brand > span:last-child,
+  .desk-label,
+  .desk-sources,
+  .desk-bottom > code,
+  .desk-settings > span {
+    display: none;
+  }
+  .desk-sidebar nav a {
+    padding: 12px;
+    justify-content: center;
+  }
+  .desk-sidebar nav a span {
+    display: none;
+  }
+  .desk-settings {
+    justify-content: center;
+  }
+}
+@media (max-width:650px) {
+  :root {
+    --desk-rail: 0px;
+  }
+  .shell {
+    grid-template-columns: minmax(0,1fr);
+  }
+  .desk-sidebar {
+    position: fixed;
+    inset: auto 0 0;
+    width: 100%;
+    height: 54px;
+    flex-direction: row;
+    gap: 0;
+    padding: 0 8px;
+    border-right: 0;
+    border-top: 1px solid var(--line);
+    z-index: 20;
+  }
+  .desk-brand {
+    display: none;
+  }
+  .desk-sidebar nav {
+    display: flex;
+    flex: 1;
+    margin: 0;
+    gap: 0;
+    justify-content: space-around;
+  }
+  .desk-sidebar nav a {
+    flex-direction: column;
+    gap: 3px;
+    font-size: 8px;
+    padding: 7px 8px;
+    flex: 1;
+    border-radius: 0;
+  }
+  .desk-sidebar nav a span {
+    display: inline;
+  }
+  .desk-sidebar nav svg {
+    width: 16px;
+    height: 16px;
+  }
+  .desk-bottom {
+    margin: 0;
+    display: flex;
+  }
+  .desk-settings {
+    padding: 12px;
+  }
+  .desk-bottom > .desk-label {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  .desk-sidebar * {
+    transition: none!important;
+  }
+}

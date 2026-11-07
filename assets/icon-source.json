@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "name": "LocalDesk",
+  "scope": "Original documentation mark, adopted from the existing original portfolio pixel geometry. No application, favicon or installed icon change.",
+  "copyright": "Copyright (c) 2026 codingEzio",
+  "license": "MIT",
+  "licenseFile": "LICENSE",
+  "geometry": [
+    "000111000",
+    "001111100",
+    "011001110",
+    "111000111",
+    "100000001",
+    "100000001",
+    "111111111",
+    "000000000",
+    "001111100"
+  ],
+  "background": "#bfd8f1",
+  "foreground": "#2b496a",
+  "websiteSourceRevision": "73d538d4ea43ccb6af6dce1d10c1802b4ef3c6a9",
+  "svgSha256": "c19350f3e5b7d133ca5b3544c51d4f765ede73e0f3fcde9115d6708d31b3b5c5",
+  "externalImagesOrFonts": false
+}
