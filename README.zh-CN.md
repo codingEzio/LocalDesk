@@ -55,8 +55,8 @@ deno task setup --workspace /path/to/configuration --projects /path/to/projects
 
 这些文件夹必须已经存在。发现功能读取名称、Git 元数据和源码统计，不会安装或执行
 发现的项目。内置插件清单会在选定工作空间下查找 `Brewfile`、`config`、`scripts`、
-`skills`、`services` 和 `tools`。修改 `plugins/*.json` 以匹配自己的目录布局；
-缺少的来源会被报告，不会被静默替换。
+`skills`、`services` 和 `tools`。在私人设置中使用 `sourcePaths` 匹配自己的目录布局；
+技能来源另在 `skills.local.json` 配置。缺少的来源会被报告，不会被静默替换。
 
 ## 明确配置模型执行
 

@@ -57,8 +57,8 @@ deno task setup --workspace /path/to/configuration --projects /path/to/projects
 這些資料夾必須已經存在。探索功能讀取名稱、Git
 中繼資料和原始碼統計，不會安裝或執行
 發現的項目。內建外掛清單會在選定工作空間下尋找 `Brewfile`、`config`、`scripts`、
-`skills`、`services` 和 `tools`。修改 `plugins/*.json` 以符合自己的目錄配置；
-缺少的來源會被回報，不會被無聲替換。
+`skills`、`services` 和 `tools`。在私人設定中使用 `sourcePaths` 符合自己的目錄配置；
+技能來源另在 `skills.local.json` 設定。缺少的來源會被回報，不會被無聲替換。
 
 ## 明確設定模型執行
 

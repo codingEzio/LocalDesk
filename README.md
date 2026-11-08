@@ -65,8 +65,9 @@ deno task setup --workspace /path/to/configuration --projects /path/to/projects
 These folders must already exist. Discovery reads names, Git metadata and source
 statistics; it does not install or execute discovered items. Built-in plugin
 manifests look for `Brewfile`, `config`, `scripts`, `skills`, `services` and
-`tools` under the selected workspace. Edit `plugins/*.json` to match your own
-layout; absent sources are reported rather than silently replaced.
+`tools` under the selected workspace. Use `sourcePaths` in your private settings
+to match your layout; configure skills separately in `skills.local.json`. Missing
+sources are reported rather than silently replaced.
 
 ## Configure model execution deliberately
 
