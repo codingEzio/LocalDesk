@@ -1,20 +1,15 @@
-export type LocProfileId =
-  | "skip"
-  | "web-svelte"
-  | "deno-vanilla"
-  | "python-tool"
-  | "python-blog"
-  | "swift-spm"
-  | "safari-ext"
-  | "dual-extension"
-  | "sitekit"
-  | "hwstatus"
-  | "rust"
-  | "ios"
-  | "vscode-ext";
+import type { LocPolicy, LocProfileId } from "../../settings.ts";
+export type { LocPolicy, LocProfileId } from "../../settings.ts";
 
 export type LocKind = "core" | "test" | "ignore";
 export type LocPartId = "mac" | "firmware";
+
+export const emptyLocPolicy = (): LocPolicy => ({
+  profiles: {},
+  skipProjects: [],
+  skipPrefixes: [],
+  excludePaths: {},
+});
 
 export const IGNORE_DIR_NAMES = new Set([
   "node_modules",
@@ -65,16 +60,22 @@ const CODE_EXTENSIONS = new Set([
   ".go",
 ]);
 
-export function skipProject(name: string): boolean {
+export function skipProject(
+  name: string,
+  policy: LocPolicy = emptyLocPolicy(),
+): boolean {
   if (name.startsWith(".") || name.startsWith("_")) return true;
-  return false;
+  return policy.skipProjects.includes(name) ||
+    policy.skipPrefixes.some((prefix) => name.startsWith(prefix));
 }
 
 export function detectProfile(
   name: string,
   hints: readonly string[],
+  policy: LocPolicy = emptyLocPolicy(),
 ): LocProfileId {
-  if (skipProject(name)) return "skip";
+  if (skipProject(name, policy)) return "skip";
+  if (Object.hasOwn(policy.profiles, name)) return policy.profiles[name];
   const has = (prefix: string) =>
     hints.some((hint) => hint === prefix || hint.startsWith(`${prefix}/`));
   if (has("frontend/src")) return "web-svelte";

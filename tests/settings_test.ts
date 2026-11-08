@@ -58,6 +58,40 @@ Deno.test("portable settings resolve checkout-relative paths without creating lo
   }
 });
 
+Deno.test("line-count overrides validate profiles and keep exclusions inside each project", async () => {
+  const root = await Deno.makeTempDir();
+  try {
+    const loc = {
+      profiles: { Example: "swift-spm" as const },
+      skipProjects: ["ExampleOld"],
+      skipPrefixes: ["Vendor-"],
+      excludePaths: { Example: ["Sources/Generated"] },
+    };
+    assertEquals(
+      (await normalizeSettings({ ...fixture(), loc }, root)).loc,
+      loc,
+    );
+    await assertRejects(
+      () =>
+        normalizeSettings({
+          ...fixture(),
+          loc: { profiles: { Example: "unknown" } },
+        }, root),
+      Error,
+    );
+    await assertRejects(
+      () =>
+        normalizeSettings({
+          ...fixture(),
+          loc: { excludePaths: { Example: ["../private"] } },
+        }, root),
+      Error,
+    );
+  } finally {
+    await Deno.remove(root, { recursive: true });
+  }
+});
+
 Deno.test("setup persists custom sources outside the checkout and preserves them on replay", async () => {
   const base = await Deno.realPath(
     await Deno.makeTempDir({ prefix: "delete_after_use_setup_" }),

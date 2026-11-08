@@ -27,6 +27,7 @@ a restart; they do not change the configured paths.
 | `frontendHost`                 | `0.0.0.0`         | LAN shell by default. Direct dev/server commands can explicitly use loopback for tests. Process Compose enforces LAN binding via `LOCALDESK_HOST`.                                                |
 | `shareCatalogOnLan`            | `false`           | Explicitly enables only GET catalog/state and workbench sharing. Directory/Git metadata then becomes visible on LAN; jobs/chats/control remain local.                                             |
 | `runtimeRegistry`              | `null`            | Optional absolute/relative registry file for project runtime observations. Absent means unknown runtime, not HTTP failure. This does not allocate ports or manage services.                       |
+| `loc`                          | Empty rules       | Optional per-project code-count profiles and exclusions; private rules belong in the local override.                                                                                              |
 | `codexPath`                    | `codex`           | Resolve a bare executable on PATH or configure a path. No executable means browsing only.                                                                                                         |
 | `modelsFile`                   | `null`            | Auto-resolve `models_cache.json` under CODEX_HOME, otherwise the home `.codex` directory. No credentials are read. Missing/invalid catalog blocks model execution.                                |
 | `sessionArchiveDirectory`      | `null`            | Same Codex-home resolution for `archived_sessions`; only owned thread filename checks are used for idempotent archive handling.                                                                   |
@@ -46,6 +47,15 @@ These upper bounds limit queue/memory/time mistakes; they are not performance
 claims at their maximum. Defaults preserve the original bounded serial workflow.
 Other fixed capture bounds remain in `backend/jobs.ts`: 300 visible events,
 12000 characters per event, and bounded diagnostic capture.
+
+`loc` affects code-count statistics only; it does not hide or delete projects.
+Its `profiles` maps exact project names to `skip`, `web-svelte`, `deno-vanilla`,
+`python-tool`, `python-blog`, `swift-spm`, `safari-ext`, `dual-extension`,
+`sitekit`, `hwstatus`, `rust`, `ios` or `vscode-ext`. `skipProjects` contains
+exact names, `skipPrefixes` contains prefixes, and `excludePaths` maps a project
+name to relative file/directory prefixes. All are empty by default. Paths cannot
+escape a project; invalid rules fail at startup. Put personal project names only
+in the ignored settings override and restart to apply changes.
 
 ## Presets and personal folders
 

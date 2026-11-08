@@ -6,6 +6,8 @@ import {
   countSourceLines,
   formatLocCompact,
 } from "../../backend/projects/backend/loc_count.ts";
+import { createLocProvider } from "../../backend/projects/backend/loc_job.ts";
+import { ProjectStore } from "../../backend/projects/db/store.ts";
 
 function writeFile(root: string, relative: string, content: string) {
   const path = join(root, ...relative.split("/"));
@@ -34,6 +36,86 @@ Deno.test("countSourceLines counts code, not blanks or whole-line comments", () 
     countSourceLines("# header\n\ndef run():\n    return 1\n", "hash"),
     { code: 2, comment: 1, blank: 1 },
   );
+});
+
+Deno.test("private line-count policy selects a profile and excludes paths without changing sources", async () => {
+  const root = Deno.makeTempDirSync();
+  try {
+    writeFile(root, "Sources/Main.swift", "struct Main {}\n");
+    writeFile(
+      root,
+      "Sources/Generated/Noise.swift",
+      "struct Noise {}\n".repeat(20),
+    );
+    writeFile(root, "Tests/Main.swift", "func test() {}\n");
+    const policy = {
+      profiles: { Example: "swift-spm" as const },
+      skipProjects: ["PrivateExample"],
+      skipPrefixes: ["Sample-"],
+      excludePaths: { Example: ["Sources/Generated"] },
+    };
+    const counted = await countProject(
+      "Example",
+      root,
+      undefined,
+      undefined,
+      policy,
+    );
+    assertEquals(counted?.profile, "swift-spm");
+    assertEquals(counted?.core, 1);
+    assertEquals(counted?.test, 1);
+    assertEquals(
+      counted?.files.includes("Sources/Generated/Noise.swift"),
+      false,
+    );
+    assertEquals(
+      await countProject("PrivateExample", root, undefined, undefined, policy),
+      null,
+    );
+    assertEquals(
+      await countProject("Sample-Other", root, undefined, undefined, policy),
+      null,
+    );
+  } finally {
+    Deno.removeSync(root, { recursive: true });
+  }
+});
+
+Deno.test("line-count policy reaches the persisted workbench statistics", async () => {
+  const root = Deno.makeTempDirSync();
+  const project = join(root, "project");
+  Deno.mkdirSync(project);
+  const store = new ProjectStore(join(root, "projects.sqlite3"));
+  try {
+    writeFile(project, "Sources/Main.swift", "struct Main {}\n");
+    writeFile(
+      project,
+      "Sources/Generated/Noise.swift",
+      "struct Noise {}\n".repeat(10),
+    );
+    const policy = {
+      profiles: { Example: "swift-spm" as const },
+      skipProjects: [],
+      skipPrefixes: [],
+      excludePaths: { Example: ["Sources/Generated"] },
+    };
+    await createLocProvider(store, policy).refresh([{
+      name: "Example",
+      path: project,
+    }]);
+    const result = store.listLoc();
+    assertEquals(result.length, 1);
+    assertEquals(result[0].profile, "swift-spm");
+    assertEquals(result[0].core, 1);
+    assertEquals(
+      Deno.readTextFileSync(join(project, "Sources/Generated/Noise.swift"))
+        .split("\n").length,
+      11,
+    );
+  } finally {
+    store.close();
+    Deno.removeSync(root, { recursive: true });
+  }
 });
 
 Deno.test("countProject splits core and test and never reads vendor trees", async () => {

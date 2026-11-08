@@ -1,6 +1,7 @@
 import type { LocCount, LocPart } from "./loc_count.ts";
 import { refreshLocCounts } from "./loc_count.ts";
 import type { LocStat, ProjectStore } from "../db/store.ts";
+import type { LocPolicy } from "./loc_profile.ts";
 
 export type LocProvider = {
   refresh: (projects: { name: string; path: string }[]) => Promise<void>;
@@ -27,7 +28,10 @@ function asCount(stat: LocStat): LocCount {
   };
 }
 
-export function createLocProvider(store: ProjectStore): LocProvider {
+export function createLocProvider(
+  store: ProjectStore,
+  policy?: LocPolicy,
+): LocProvider {
   let inflight: Promise<void> | null = null;
   let pending: { name: string; path: string }[] | null = null;
 
@@ -35,7 +39,9 @@ export function createLocProvider(store: ProjectStore): LocProvider {
     const previous = new Map(
       store.listLoc().map((stat) => [stat.name, asCount(stat)]),
     );
-    const { counts, drop } = await refreshLocCounts(projects, previous);
+    const { counts, drop } = await refreshLocCounts(projects, previous, {
+      policy,
+    });
     for (const count of counts) {
       store.upsertLoc({
         name: count.name,

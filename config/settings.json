@@ -1,6 +1,12 @@
 {
   "workspace": null,
   "projectsRoot": null,
+  "loc": {
+    "profiles": {},
+    "skipProjects": [],
+    "skipPrefixes": [],
+    "excludePaths": {}
+  },
   "frontendPort": 10000,
   "backendPort": 15000,
   "frontendHost": "0.0.0.0",

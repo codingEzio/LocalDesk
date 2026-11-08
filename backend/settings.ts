@@ -1,6 +1,35 @@
 import { isAbsolute, join, resolve } from "node:path";
 import { dataDirectory, settingsOverride } from "./runtime_paths.ts";
 
+export const LOC_PROFILES = [
+  "skip",
+  "web-svelte",
+  "deno-vanilla",
+  "python-tool",
+  "python-blog",
+  "swift-spm",
+  "safari-ext",
+  "dual-extension",
+  "sitekit",
+  "hwstatus",
+  "rust",
+  "ios",
+  "vscode-ext",
+] as const;
+export type LocProfileId = typeof LOC_PROFILES[number];
+export type LocPolicy = {
+  profiles: Record<string, LocProfileId>;
+  skipProjects: string[];
+  skipPrefixes: string[];
+  excludePaths: Record<string, string[]>;
+};
+const emptyLocPolicy = (): LocPolicy => ({
+  profiles: {},
+  skipProjects: [],
+  skipPrefixes: [],
+  excludePaths: {},
+});
+
 export type ModelPreset = {
   name: string;
   model: string;
@@ -29,7 +58,79 @@ export type Settings = {
   maxOutputBytes: number;
   discoveryDirectories: string[];
   projectScanIntervalMs: number;
+  loc: LocPolicy;
 };
+
+function normalizeLocPolicy(input: unknown): LocPolicy {
+  if (input === undefined) return emptyLocPolicy();
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    throw new Error("Invalid loc settings");
+  }
+  const raw = input as Record<string, unknown>;
+  const allowed = ["profiles", "skipProjects", "skipPrefixes", "excludePaths"];
+  if (Object.keys(raw).some((key) => !allowed.includes(key))) {
+    throw new Error("Invalid loc setting");
+  }
+  const record = (value: unknown): Record<string, unknown> => {
+    if (value === undefined) return {};
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      throw new Error("Invalid loc map");
+    }
+    return value as Record<string, unknown>;
+  };
+  const printable = (value: string) =>
+    [...value].every((character) =>
+      character.charCodeAt(0) >= 32 && character.charCodeAt(0) !== 127
+    );
+  const validName = (value: unknown) =>
+    typeof value === "string" && value.trim().length > 0 &&
+    value.length <= 200 && !value.includes("/") && !value.includes("\\") &&
+    printable(value) &&
+    value !== "." && value !== "..";
+  const list = (
+    value: unknown,
+    valid: (value: unknown) => boolean,
+  ): string[] => {
+    if (value === undefined) return [];
+    if (
+      !Array.isArray(value) || value.length > 1000 ||
+      value.some((item) => !valid(item))
+    ) {
+      throw new Error("Invalid loc list");
+    }
+    return value as string[];
+  };
+  const profiles = record(raw.profiles);
+  const paths = record(raw.excludePaths);
+  if (Object.keys(profiles).length > 1000 || Object.keys(paths).length > 1000) {
+    throw new Error("Invalid loc map");
+  }
+  for (const [name, profile] of Object.entries(profiles)) {
+    if (
+      !validName(name) || typeof profile !== "string" ||
+      !(LOC_PROFILES as readonly string[]).includes(profile)
+    ) {
+      throw new Error("Invalid loc profile");
+    }
+  }
+  const validPath = (value: unknown) =>
+    typeof value === "string" && value.length <= 1024 &&
+    value.length > 0 && !value.includes("\\") && printable(value) &&
+    !value.startsWith("/") &&
+    value.split("/").every((part) =>
+      part !== "" && part !== "." && part !== ".."
+    );
+  for (const [name, prefixes] of Object.entries(paths)) {
+    if (!validName(name)) throw new Error("Invalid loc project");
+    list(prefixes, validPath);
+  }
+  return {
+    profiles: profiles as LocPolicy["profiles"],
+    skipProjects: list(raw.skipProjects, validName),
+    skipPrefixes: list(raw.skipPrefixes, validName),
+    excludePaths: paths as LocPolicy["excludePaths"],
+  };
+}
 
 /** Relative paths, including an explicit override, are relative to this checkout. */
 export async function loadSettings(root: string): Promise<Settings> {
@@ -52,6 +153,7 @@ export async function normalizeSettings(
   root: string,
 ): Promise<Settings> {
   const value = { ...input };
+  value.loc = normalizeLocPolicy(value.loc);
   function text(key: string): string {
     const result = value[key];
     if (typeof result !== "string" || !result.trim()) {

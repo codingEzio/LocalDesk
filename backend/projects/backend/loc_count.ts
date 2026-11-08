@@ -3,8 +3,10 @@ import {
   classifyPart,
   classifyPath,
   detectProfile,
+  emptyLocPolicy,
   isIgnoredDirName,
   type LocPartId,
+  type LocPolicy,
   type LocProfileId,
   posixPath,
   skipProject,
@@ -198,6 +200,7 @@ type CountedFile = {
 async function listCountedFiles(
   root: string,
   profile: LocProfileId,
+  excluded: readonly string[],
 ): Promise<CountedFile[]> {
   const files: CountedFile[] = [];
   const walk = async (relativeDir: string) => {
@@ -212,6 +215,11 @@ async function listCountedFiles(
       const relative = relativeDir
         ? `${relativeDir}/${entry.name}`
         : entry.name;
+      if (
+        excluded.some((path) =>
+          relative === path || relative.startsWith(`${path}/`)
+        )
+      ) continue;
       if (entry.isDirectory) {
         if (skipWalkDir(profile, relative)) continue;
         await walk(relative);
@@ -275,12 +283,16 @@ export async function countProject(
   root: string,
   previous?: LocCount,
   now: () => string = () => new Date().toISOString(),
+  policy: LocPolicy = emptyLocPolicy(),
 ): Promise<LocCount | null> {
-  if (skipProject(name)) return null;
+  if (skipProject(name, policy)) return null;
   const hints = await collectHints(root);
-  const profile = detectProfile(name, hints);
+  const profile = detectProfile(name, hints, policy);
   if (profile === "skip") return null;
-  const files = await listCountedFiles(root, profile);
+  const excluded = Object.hasOwn(policy.excludePaths, name)
+    ? policy.excludePaths[name]
+    : [];
+  const files = await listCountedFiles(root, profile, excluded);
   const stamp = fingerprint(profile, files);
   if (
     previous &&
@@ -323,7 +335,8 @@ export async function countProject(
 export async function refreshLocCounts(
   projects: { name: string; path: string }[],
   previous: Map<string, LocCount>,
-  options: { concurrency?: number; now?: () => string } = {},
+  options: { concurrency?: number; now?: () => string; policy?: LocPolicy } =
+    {},
 ): Promise<{ counts: LocCount[]; drop: string[] }> {
   const concurrency = options.concurrency ?? 2;
   const now = options.now ?? (() => new Date().toISOString());
@@ -337,6 +350,7 @@ export async function refreshLocCounts(
         project.path,
         previous.get(project.name),
         now,
+        options.policy,
       );
       if (counted) counts.push(counted);
       else drop.push(project.name);

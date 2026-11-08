@@ -9,7 +9,7 @@ import { createLocProvider } from "./projects/backend/loc_job.ts";
 /** Own the monitor's migrated scanner, SQLite history and bounded runtime facts. */
 export class Workbench {
   private store = new ProjectStore(join(local, "projects.sqlite3"));
-  private loc = createLocProvider(this.store);
+  private loc = createLocProvider(this.store, settings.loc);
   private locTask: Promise<void> = Promise.resolve();
   private app = createApp({
     store: this.store,
