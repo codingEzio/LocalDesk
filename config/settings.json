@@ -11,6 +11,7 @@
   "backendPort": 15000,
   "frontendHost": "0.0.0.0",
   "shareCatalogOnLan": false,
+  "lanInterfaces": [],
   "runtimeRegistry": null,
   "codexPath": "codex",
   "modelsFile": null,

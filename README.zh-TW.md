@@ -96,8 +96,10 @@ deno task setup --model MODEL_ID --effort EFFORT
 機密資訊、工作、記錄和 SQLite 資料應放在受追蹤原始碼之外。
 
 介面預設監聽 LAN，但除非明確啟用 `shareCatalogOnLan`，**所有資料 API 都僅供本機
-用戶端存取**。啟用分享後，僅唯讀開放專案清單、路徑與 Git 狀態；來源目錄、模型設定、
-工作、聊天及修改操作仍限本機。遠端裝置開啟 `/workbench`。未知 Host 和外部 Origin
+用戶端存取**。啟用分享還須在 `lanInterfaces` 指定網路介面（例如 Mac Wi-Fi 的
+`["en0"]`）；只有這些介面目前網段的裝置可存取，無法判斷時拒絕。分享僅唯讀開放專案清單、
+路徑與 Git 狀態；來源目錄、模型設定、工作、聊天及修改操作仍限本機。同網段任何裝置均可
+讀取這些專案資訊。遠端裝置開啟 `/workbench`。未知 Host 和外部 Origin
 請求會被拒絕；前端不會信任傳入的 Authorization 標頭。不要透過會讓遠端用戶端看起來像本機的反向代理
 公開此服務。
 

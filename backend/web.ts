@@ -1,11 +1,13 @@
 import { createStaticApp } from "./static-web.ts";
 import { localOriginPolicy } from "./origin.ts";
+import { createLanPolicy } from "./lan_network.ts";
 
 type WebOptions = {
   token: string;
   frontendPort: number;
   localAddresses: string[];
   shareCatalogOnLan: boolean;
+  isLanPeer?: (peer: string, target: string) => boolean;
   fetch: (request: Request) => Promise<Response>;
 };
 
@@ -39,7 +41,10 @@ export function createWebHandler(options: WebOptions) {
     if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {
       const readOnlyCatalog = req.method === "GET" &&
         (url.pathname === "/api/state" || url.pathname === "/api/workbench");
-      if (!isLocal && !(options.shareCatalogOnLan && readOnlyCatalog)) {
+      if (
+        !isLocal && !(options.shareCatalogOnLan && readOnlyCatalog &&
+          options.isLanPeer?.(peerAddress, url.hostname))
+      ) {
         return reject(
           "Open localhost on the LocalDesk host to access local data",
         );
@@ -72,6 +77,10 @@ if (import.meta.main) {
       ...Deno.networkInterfaces().map((n) => n.address),
     ],
     shareCatalogOnLan: settings.shareCatalogOnLan,
+    isLanPeer: createLanPolicy(
+      settings.lanInterfaces,
+      () => Deno.networkInterfaces(),
+    ),
     fetch: app.fetch,
   });
   const server = Deno.serve({

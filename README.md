@@ -109,9 +109,13 @@ defaults; private `<data>/settings.local.json` holds personal overrides.
 Secrets, jobs, logs and SQLite records belong outside the tracked source.
 
 The shell binds LAN by default, but **all data APIs are local-peer-only** unless
-`shareCatalogOnLan` is explicitly enabled. Sharing exposes only the read-only
-project list, including paths and Git status; source inventories, model settings,
-jobs, chats and mutations remain local. Remote visitors open `/workbench`.
+`shareCatalogOnLan` is enabled and `lanInterfaces` names the network interfaces
+to share on (for example, `["en0"]` for a Mac's Wi-Fi). Access is limited to
+peers on those interfaces' current subnets; absent or invalid networks deny
+access. Sharing exposes only the read-only project list, including paths and Git
+status; source inventories, model settings, jobs, chats and mutations remain
+local. Remote visitors open `/workbench`. Network access is not authentication:
+any device on an allowed subnet can read these project details.
 Unknown Host and foreign Origin requests are rejected;
 incoming Authorization headers are not trusted by the frontend. Do not expose
 this service through a reverse proxy that makes remote clients look local.

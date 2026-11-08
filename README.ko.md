@@ -43,7 +43,7 @@ Settings의 Workspace sources／Projects and runtime 연결은 읽기와 새 작
 
 ## 네트워크와 검증
 
-셸은 LAN에 바인딩하지만 shareCatalogOnLan을 켜지 않으면 API는 로컬 전용입니다. 공유 시 프로젝트 목록, 경로, Git 상태만 읽을 수 있으며 소스 목록, 모델 설정, 작업, 대화, 변경은 공유하지 않습니다. 원격 기기는 `/workbench`를 엽니다. Host／Origin과 능력을 확인하고 외부 Authorization을 신뢰하지 않습니다. 원격 클라이언트가 로컬처럼 보이는 reverse proxy에 노출하지 마세요.
+셸은 LAN에 바인딩하지만 `shareCatalogOnLan`을 켜고 `lanInterfaces`에 공유할 인터페이스(예: Mac Wi-Fi의 `["en0"]`)를 지정하기 전에는 API가 로컬 전용입니다. 지정된 인터페이스의 현재 서브넷에서만 접근할 수 있으며 판단할 수 없으면 거부합니다. 허용된 기기는 프로젝트 목록, 경로, Git 상태만 읽을 수 있고 소스 목록, 모델 설정, 작업, 대화, 변경은 로컬에 남습니다. 원격 기기는 `/workbench`를 엽니다. Host／Origin과 능력을 확인하고 외부 Authorization을 신뢰하지 않습니다. 원격 클라이언트가 로컬처럼 보이는 reverse proxy에 노출하지 마세요.
 
 Process Compose가 두 HTTP 프로세스를 소유합니다. `deno task service --dry-run`은 Local/runtime에 정의만 검사 저장합니다. 설치는 별도이며 사용 중 포트／로드된 라벨／충돌 plist를 거부합니다. 안정적인 PATH 실행기를 기록합니다. runtimeRegistry를 명시하지 않으면 다른 프로젝트 실행 상태는 알 수 없습니다. 프로젝트 SQLite 탐색은 최신 캐시이며 모든 탐색의 감사 기록이 아닙니다.
 

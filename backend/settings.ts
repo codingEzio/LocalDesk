@@ -1,6 +1,18 @@
 import { isAbsolute, join, resolve } from "node:path";
 import { dataDirectory, settingsOverride } from "./runtime_paths.ts";
 
+/** Invalid or absent interface choices never enable network access. */
+export function normalizeLanInterfaces(value: unknown): string[] {
+  if (value === undefined) return [];
+  if (
+    !Array.isArray(value) || value.length > 32 ||
+    value.some((name) =>
+      typeof name !== "string" || !/^[A-Za-z0-9_.-]{1,64}$/.test(name)
+    ) || new Set(value).size !== value.length
+  ) throw new Error("Invalid lanInterfaces");
+  return value;
+}
+
 export const LOC_PROFILES = [
   "skip",
   "web-svelte",
@@ -43,6 +55,7 @@ export type Settings = {
   backendPort: number;
   frontendHost: string;
   shareCatalogOnLan: boolean;
+  lanInterfaces: string[];
   runtimeRegistry: string | null;
   codexPath: string;
   modelsFile: string;
@@ -154,6 +167,7 @@ export async function normalizeSettings(
 ): Promise<Settings> {
   const value = { ...input };
   value.loc = normalizeLocPolicy(value.loc);
+  value.lanInterfaces = normalizeLanInterfaces(value.lanInterfaces);
   function text(key: string): string {
     const result = value[key];
     if (typeof result !== "string" || !result.trim()) {

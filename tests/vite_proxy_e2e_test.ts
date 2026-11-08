@@ -49,6 +49,7 @@ Deno.test({
         const name of [
           "web.ts",
           "origin.ts",
+          "lan_network.ts",
           "static-web.ts",
           "config.ts",
           "runtime_paths.ts",

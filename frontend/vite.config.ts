@@ -7,6 +7,8 @@ import { resolve } from "node:path";
 import { Readable } from "node:stream";
 import { fileURLToPath } from "node:url";
 import { createWebHandler } from "../backend/web.ts";
+import { createLanPolicy } from "../backend/lan_network.ts";
+import { normalizeLanInterfaces } from "../backend/settings.ts";
 import { dataDirectory, settingsOverride } from "../backend/runtime_paths.ts";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -28,6 +30,7 @@ const settings = {
   ...JSON.parse(readFileSync(defaultsPath, "utf8")),
   ...overrides,
 };
+const lanInterfaces = normalizeLanInterfaces(settings.lanInterfaces);
 for (const key of ["frontendPort", "backendPort"]) {
   if (
     !Number.isInteger(settings[key]) || settings[key] < 1 ||
@@ -95,6 +98,18 @@ export default defineConfig({
             frontendPort: settings.frontendPort,
             localAddresses,
             shareCatalogOnLan: settings.shareCatalogOnLan === true,
+            isLanPeer: createLanPolicy(
+              lanInterfaces,
+              () =>
+                Object.entries(networkInterfaces()).flatMap(([name, entries]) =>
+                  entries?.map(({ address, cidr }) => ({
+                    name,
+                    address,
+                    cidr,
+                  })) ??
+                    []
+                ),
+            ),
             async fetch(request) {
               const url = new URL(request.url);
               const target = new URL(

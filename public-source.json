@@ -126,6 +126,10 @@
       "target": "backend/jobs.ts"
     },
     {
+      "source": "backend/lan_network.ts",
+      "target": "backend/lan_network.ts"
+    },
+    {
       "source": "backend/lan_view.ts",
       "target": "backend/lan_view.ts"
     },

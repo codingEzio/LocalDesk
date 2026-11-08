@@ -1,6 +1,7 @@
 import { assertEquals, assertMatch } from "@std/assert";
 import { createWebHandler } from "../backend/web.ts";
 import { createStaticApp } from "../backend/static-web.ts";
+import { createLanPolicy } from "../backend/lan_network.ts";
 
 Deno.test("web privacy boundary denies LAN catalog by default and rejects foreign origins", async () => {
   const forwarded: Request[] = [];
@@ -75,6 +76,11 @@ Deno.test("explicit LAN sharing exposes only known read-only catalog routes with
     frontendPort: 4100,
     localAddresses: ["127.0.0.1", "192.0.2.1"],
     shareCatalogOnLan: true,
+    isLanPeer: createLanPolicy(["wifi"], () => [{
+      name: "wifi",
+      address: "192.0.2.1",
+      cidr: "192.0.2.1/24",
+    }]),
     fetch: (request) => {
       forwarded.push(request);
       return Promise.resolve(new Response("ok"));
@@ -110,6 +116,87 @@ Deno.test("explicit LAN sharing exposes only known read-only catalog routes with
       "192.0.2.2",
     )).status,
     403,
+  );
+});
+
+Deno.test("LAN access requires a current selected interface and its actual subnet", async () => {
+  const interfaces = [
+    { name: "wifi", address: "192.0.2.1", cidr: "192.0.2.1/24" },
+    { name: "wifi", address: "fd12:abcd::1", cidr: "fd12:abcd::1/64" },
+    { name: "wifi", address: "fe80::1", cidr: "fe80::1/64" },
+    { name: "bridge", address: "10.8.0.1", cidr: "10.8.0.1/24" },
+  ];
+  const policy = createLanPolicy(["wifi"], () => interfaces);
+  const handler = createWebHandler({
+    token: "private-token",
+    frontendPort: 4100,
+    localAddresses: ["127.0.0.1", ...interfaces.map((item) => item.address)],
+    shareCatalogOnLan: true,
+    isLanPeer: policy,
+    fetch: () => Promise.resolve(new Response("ok")),
+  });
+  const request = (host: string, peer: string, headers?: HeadersInit) =>
+    handler(
+      new Request(`http://${host}:4100/api/workbench`, { headers }),
+      peer,
+    );
+  assertEquals((await request("192.0.2.1", "192.0.2.7")).status, 200);
+  assertEquals((await request("192.0.2.1", "::ffff:c000:207")).status, 200);
+  assertEquals((await request("[fd12:abcd::1]", "fd12:abcd::2")).status, 200);
+  for (
+    const [host, peer] of [
+      ["192.0.2.1", "192.0.3.7"],
+      ["192.0.2.1", "203.0.113.7"],
+      ["192.0.2.1", "::ffff:203.0.113.7"],
+      ["192.0.2.1", "10.8.0.2"],
+      ["10.8.0.1", "10.8.0.2"],
+      ["localhost", "203.0.113.7"],
+      ["[fd12:abcd::1]", "fd12:abce::2"],
+      ["[fd12:abcd::1]", "fe80::2%wifi"],
+      ["[fe80::1]", "fe80::2"],
+    ]
+  ) {
+    assertEquals(
+      (await request(host, peer, {
+        "x-forwarded-for": "192.0.2.7",
+        authorization: "Bearer private-token",
+      })).status,
+      403,
+      `${host} / ${peer}`,
+    );
+  }
+  assertEquals((await request("localhost", "127.0.0.1")).status, 200);
+  const missing = createLanPolicy([], () => interfaces);
+  assertEquals(missing("192.0.2.7", "192.0.2.1"), false);
+  const missingPolicy = createWebHandler({
+    token: "private-token",
+    frontendPort: 4100,
+    localAddresses: ["127.0.0.1", "192.0.2.1"],
+    shareCatalogOnLan: true,
+    fetch: () => Promise.resolve(new Response("ok")),
+  });
+  assertEquals(
+    (await missingPolicy(
+      new Request("http://192.0.2.1:4100/api/workbench"),
+      "192.0.2.7",
+    )).status,
+    403,
+  );
+  interfaces[0].cidr = "192.0.2.1/0";
+  assertEquals(policy("192.0.2.7", "192.0.2.1"), false);
+  interfaces[0].cidr = "192.0.3.1/24";
+  assertEquals(policy("192.0.2.7", "192.0.2.1"), false);
+  interfaces[0] = { name: "wifi", address: "192.0.3.1", cidr: "192.0.3.1/24" };
+  assertEquals(policy("192.0.2.7", "192.0.2.1"), false);
+  assertEquals(policy("192.0.3.7", "192.0.3.1"), true);
+  assertEquals(
+    createLanPolicy(["wifi"], () => {
+      throw Error("unavailable");
+    })(
+      "192.0.2.7",
+      "192.0.2.1",
+    ),
+    false,
   );
 });
 
