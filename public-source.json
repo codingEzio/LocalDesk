@@ -202,6 +202,10 @@
       "target": "backend/skills.ts"
     },
     {
+      "source": "backend/source_path.ts",
+      "target": "backend/source_path.ts"
+    },
+    {
       "source": "backend/static-web.ts",
       "target": "backend/static-web.ts"
     },
@@ -608,6 +612,10 @@
     {
       "source": "tests/skills_e2e_test.ts",
       "target": "tests/skills_e2e_test.ts"
+    },
+    {
+      "source": "tests/source_path_test.ts",
+      "target": "tests/source_path_test.ts"
     },
     {
       "source": "tests/source_reconfiguration_test.ts",

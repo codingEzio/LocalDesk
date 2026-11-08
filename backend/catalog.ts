@@ -2,6 +2,7 @@ import { integrations } from "./integrations.ts";
 import { Skills } from "./skills.ts";
 import { join, relative, resolve } from "node:path";
 import { atomicJson, loadJson, local, root, settings } from "./config.ts";
+import { blockedWorkspaceRelative } from "./source_path.ts";
 export type Item = {
   id: string;
   name: string;
@@ -131,11 +132,7 @@ export class Catalog {
                 : raw.path;
               const target = resolve(settings.workspace, sourcePath);
               const rel = relative(settings.workspace, target);
-              if (
-                rel.startsWith("..") || rel.startsWith("/") ||
-                rel === "Local" ||
-                rel.startsWith("Local/") || rel.startsWith(".git")
-              ) {
+              if (blockedWorkspaceRelative(rel)) {
                 throw new Error(
                   "Source must stay in selected workspace configuration/source",
                 );
@@ -153,10 +150,7 @@ export class Catalog {
                   await Deno.realPath(settings.workspace),
                   real,
                 );
-                if (
-                  resolved.startsWith("..") || resolved === "Local" ||
-                  resolved.startsWith("Local/") || resolved.startsWith(".git")
-                ) {
+                if (blockedWorkspaceRelative(resolved)) {
                   throw new Error(
                     "Source symlink escapes the allowed workspace sources",
                   );
