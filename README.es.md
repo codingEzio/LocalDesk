@@ -43,7 +43,7 @@ Workspace sources／Projects and runtime en Settings detienen lecturas y nuevos 
 
 ## Red y verificación
 
-El shell escucha en LAN, pero las API de datos son solo para peers locales. shareCatalogOnLan permite explícitamente leer catálogo y proyectos, incluidas rutas y datos Git; trabajos, chats y mutaciones siguen locales. Valida Host／Origin y capacidad sin confiar en Authorization externo. No lo expongas tras un proxy que haga pasar clientes remotos por locales.
+El shell escucha en LAN, pero las API son solo locales salvo que se active shareCatalogOnLan. Solo comparte la lista de proyectos, rutas y estado Git en modo lectura; fuentes, modelos, trabajos, chats y cambios siguen locales. El acceso remoto usa `/workbench`. Valida Host／Origin y capacidad sin confiar en Authorization externo. No lo expongas tras un proxy que haga pasar clientes remotos por locales.
 
 Process Compose posee ambos procesos HTTP. `deno task service --dry-run` solo valida y guarda definiciones en Local/runtime. Instalar es otra acción y rechaza puertos ocupados, etiquetas cargadas y plists conflictivos. Conserva el ejecutable lógico de PATH. Sin runtimeRegistry configurado, otros estados son desconocidos. La SQLite de exploración guarda la última instantánea, no una auditoría de todas las exploraciones.
 

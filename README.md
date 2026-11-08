@@ -109,9 +109,10 @@ defaults; private `<data>/settings.local.json` holds personal overrides.
 Secrets, jobs, logs and SQLite records belong outside the tracked source.
 
 The shell binds LAN by default, but **all data APIs are local-peer-only** unless
-`shareCatalogOnLan` is explicitly enabled. Sharing allows read-only catalog and
-project metadata, including paths and repository information. Jobs, chats and
-mutations remain local. Unknown Host and foreign Origin requests are rejected;
+`shareCatalogOnLan` is explicitly enabled. Sharing exposes only the read-only
+project list, including paths and Git status; source inventories, model settings,
+jobs, chats and mutations remain local. Remote visitors open `/workbench`.
+Unknown Host and foreign Origin requests are rejected;
 incoming Authorization headers are not trusted by the frontend. Do not expose
 this service through a reverse proxy that makes remote clients look local.
 

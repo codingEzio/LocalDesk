@@ -126,6 +126,10 @@
       "target": "backend/jobs.ts"
     },
     {
+      "source": "backend/lan_view.ts",
+      "target": "backend/lan_view.ts"
+    },
+    {
       "source": "backend/main.ts",
       "target": "backend/main.ts"
     },
@@ -532,6 +536,10 @@
     {
       "source": "tests/integrations_e2e_test.ts",
       "target": "tests/integrations_e2e_test.ts"
+    },
+    {
+      "source": "tests/lan_view_test.ts",
+      "target": "tests/lan_view_test.ts"
     },
     {
       "source": "tests/projects/api.test.ts",

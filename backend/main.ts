@@ -15,6 +15,7 @@ import { Skills } from "./skills.ts";
 const skills = new Skills();
 import { Jobs } from "./jobs.ts";
 import { Workbench } from "./workbench.ts";
+import { lanState, lanWorkbench } from "./lan_view.ts";
 import {
   knownWorkspaceSource,
   refreshSourcePaths,
@@ -146,7 +147,8 @@ const server = Deno.serve(
         return json({ error: "Not found" }, 404);
       }
       if (path === "/api/workbench" && req.method === "GET") {
-        return json(workbench.view());
+        const view = workbench.view();
+        return json(trusted ? view : lanWorkbench(view));
       }
       if (path === "/health") {
         return json({
@@ -156,6 +158,7 @@ const server = Deno.serve(
         });
       }
       if (path === "/api/state" && req.method === "GET") {
+        if (!trusted) return json(lanState(jobsReady));
         return json({
           version: "0.2.1",
           integrations: integrations.view(),

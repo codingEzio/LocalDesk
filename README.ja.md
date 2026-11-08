@@ -43,7 +43,7 @@ Settings の Workspace sources／Projects and runtime は読取と新規作業�
 
 ## ネットワークと検証
 
-シェルは LAN にバインドしますがデータ API はローカル peer 専用です。shareCatalogOnLan を明示した場合だけカタログ／プロジェクト情報を読取共有し、パスや Git 情報も含みます。ジョブ・会話・変更操作は共有しません。Host／Origin と能力を検証し、外部 Authorization を信用しません。遠隔クライアントがローカルに見える reverse proxy へ公開しないでください。
+シェルは LAN にバインドしますが、shareCatalogOnLan を明示しない限り API はローカル専用です。共有するのはプロジェクト一覧、パス、Git 状態の読取のみで、ソース一覧、モデル設定、ジョブ、会話、変更操作は共有しません。遠隔端末は `/workbench` を開きます。Host／Origin と能力を検証し、外部 Authorization を信用しません。遠隔クライアントがローカルに見える reverse proxy へ公開しないでください。
 
 Process Compose が二つの HTTP 子プロセスを所有します。`deno task service --dry-run` は Local/runtime に定義を検証保存するだけです。インストールは別操作で、使用中ポート、読込済みラベル、競合 plist を拒否します。安定した PATH ランチャを記録します。プロジェクト実行観察は runtimeRegistry を明示しない限り不明です。SQLite のプロジェクト探索は最新キャッシュであり、全走査の監査履歴ではありません。
 

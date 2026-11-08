@@ -167,6 +167,10 @@ async function load() {
   try {
     const start = performance.now();
     data = await api("/api/state");
+    if (data.readOnly) {
+      location.replace("/workbench");
+      return;
+    }
     if (!chosenPreset && data.runner?.presets?.length) {
       chosenPreset = data.runner.presets.some((preset: any) => preset.name === data.runner.name)
         ? data.runner.name : data.runner.presets[0].name;
