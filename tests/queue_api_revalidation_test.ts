@@ -19,6 +19,14 @@ Deno.test("HTTP reconnect resumes a paused queue in order and preserves interrup
   const outer = await Deno.realPath(
     await Deno.makeTempDir({ prefix: "localdesk-queue-api-" }),
   );
+  const info = await new Deno.Command(Deno.execPath(), {
+    args: ["info", "--json"],
+    stdout: "piped",
+    stderr: "piped",
+  }).output();
+  assert(info.success, new TextDecoder().decode(info.stderr));
+  const denoCache = JSON.parse(new TextDecoder().decode(info.stdout)).denoDir;
+  assert(typeof denoCache === "string" && denoCache.length > 0);
   let success = false, serial = 0;
   async function step(name: string, fn: () => Promise<void>) {
     if (!await t.step(name, fn)) {
@@ -178,8 +186,7 @@ Deno.test("HTTP reconnect resumes a paused queue in order and preserves interrup
       LOCALDESK_DATA: state,
       CODEX_HOME: join(home, ".codex"),
     };
-    const cache = Deno.env.get("DENO_DIR");
-    if (cache) env.DENO_DIR = cache;
+    env.DENO_DIR = denoCache;
     let child: Deno.ChildProcess | undefined;
     let stderr: Promise<string> | undefined;
     let token = "";
