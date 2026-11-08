@@ -25,7 +25,7 @@
   "inspect": "Ask about this",
   "moduleTitle": "Make it yours.",
   "moduleCaption": "Show the sources you need. New plugin manifests are discovered automatically.",
-  "moduleHint": "These switches only hide cards; sources are still scanned. Use Source connections in Settings to stop reading a source.",
+  "moduleHint": "Hidden modules are still scanned. Disconnect a source in Settings to pause its scanning and related actions.",
   "close": "Close",
   "commandPlaceholder": "Describe what you need…",
   "send": "Send instruction",
@@ -136,8 +136,8 @@
   "sourceDisconnect": "Disconnect",
   "sourceConnect": "Connect",
   "sourceChanging": "Applying…",
-  "sourceHint": "Applies now and survives restart. Paths are selected in local configuration; changing paths requires a restart. Hidden modules are still scanned. Disconnect a source here to stop reading it.",
-  "sourceRetention": "Disconnected sources are not scanned or used for new work. Saved chats, results and project history remain local. Reconnect to scan the configured path again.",
+  "sourceHint": "Disconnecting pauses the source scanner and its associated actions. Other configured paths or external commands can still access files.",
+  "sourceRetention": "Saved chats, results and project history remain local. Reconnect to resume scanning.",
   "sourceJobs": "Finish or stop queued/running jobs in Activity before disconnecting.",
   "sourceActivity": "Open Activity",
   "sourceOffline": "Source disconnected. Saved history is retained. Reconnect in Settings to use this source.",
@@ -145,5 +145,10 @@
   "sourceScanError": "Connected, but the source is unavailable. Check the configured path and scan error.",
   "moduleVisibility": "MODULE VISIBILITY",
   "sourceRefreshFailed": "Connection saved. The view could not refresh; reload to check the current source status.",
-  "sourceUnknown": "Could not confirm the connection result. Reload to check the saved state before trying again."
+  "sourceUnknown": "Could not confirm the connection result. Reload to check the saved state before trying again.",
+  "sourceConnectBoth": "Connect both",
+  "sourceDisconnectBoth": "Disconnect both",
+  "sourceOverlap": "These sources overlap or cannot be distinguished. Change both connections together.",
+  "sourceSafety": "Skill management pauses while either source is disconnected because skills may reference both sources.",
+  "sourceNeedsBoth": "A disconnected source path changed. Both sources are paused until you choose Connect both."
 }

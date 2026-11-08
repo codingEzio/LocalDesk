@@ -5,6 +5,8 @@ overrides only named fields. `<data>` is the resolved product profile directory:
 Application Support/LocalDesk; Linux XDG_DATA_HOME/localdesk or ~/.local/share/localdesk;
 Windows LOCALAPPDATA/LocalDesk or ~/AppData/Local/LocalDesk. Only macOS is verified.
 `LOCALDESK_DATA` overrides that directory; relative values resolve from the checkout.
+It must resolve outside the checkout or under its ignored `Local/` directory;
+unresolved symbolic links and aliases into other checkout paths are rejected.
 All jobs, capability, chats, module/source preferences, SQLite and skill-management
 records live there. `settings.local.json` and `skills.local.json` also live there.
 The two default source folders are `<data>/workspace` and `<data>/projects`; JSON
@@ -69,7 +71,7 @@ folder. `deno task setup` creates only empty product-owned sources. Configure
 existing sources explicitly with `--workspace` and `--projects`; optional
 `runtimeRegistry` observations follow the projects connection. The existing
 ignored `<data>/skills.local.json` can select `skillsRoot` and `referenceRoots`;
-these skill sources and all skill operations follow the workspace connection. No
+skill operations require both connections because references can cross them. No
 external plugin code is loaded or executed by discovery.
 
 Settings → Source connections provides two live switches:
@@ -85,7 +87,7 @@ Both start connected to the explicitly configured paths (empty local folders by
 portable default). Their persisted booleans live only in ignored
 `<data>/integrations.json`; a malformed store fails startup rather than silently
 reconnecting. `POST /api/integrations` accepts
-`{id: "workspace" | "projects",
+`{id: "workspace" | "projects" | "both",
 connected: boolean}` through the existing local
 capability/origin boundary.
 
@@ -97,7 +99,9 @@ or running job blocks either disconnect: use Activity to stop queued work and
 then stop running work, or let it finish. This protects existing execution
 context. Stopping does not undo prior side effects. A restart marks interrupted
 jobs as before; retained queued jobs still validate that their source is
-connected before execution. No job is rebound to a different folder.
+connected before execution. A persisted sequence preserves queue order across
+restart, including equal or backward-moving clocks. No job is rebound to a
+different folder.
 
 Successful disconnect hides the current source snapshot, stops new scans and
 rejects source-bound operations, including skill edits and new jobs. It does not
@@ -110,6 +114,10 @@ they do not masquerade as deliberately disconnected sources. Changing a path in
 server configuration still requires a restart. These switches are source-access
 controls for LocalDesk, not an operating-system sandbox or a mechanism to revoke
 a third-party process.
+
+If configured roots overlap or their relationship is unknown, change both
+connections together. A changed path while disconnected requires explicit
+reconnection of both; retargeting an already connected source is refused.
 
 ## macOS service
 

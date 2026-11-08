@@ -1,6 +1,7 @@
 import { dirname, join } from "node:path";
 import { loadSettings, normalizeSettings } from "../backend/settings.ts";
 import { dataDirectory, settingsOverride } from "../backend/runtime_paths.ts";
+import { atomicJson } from "../backend/atomic_json.ts";
 
 const root = dirname(import.meta.dirname!);
 const names = new Set([
@@ -99,12 +100,8 @@ if (settings.workspace === join(dataDirectory(root), "workspace")) {
     if (!(e instanceof Deno.errors.AlreadyExists)) throw e;
   }
 }
-const temporary = file + ".tmp";
 await Deno.mkdir(dirname(file), { recursive: true, mode: 0o700 });
-await Deno.writeTextFile(temporary, JSON.stringify(next, null, 2) + "\n", {
-  mode: 0o600,
-});
-await Deno.rename(temporary, file);
+await atomicJson(file, next);
 const readback = await loadSettings(root);
 if (
   readback.workspace !== settings.workspace ||

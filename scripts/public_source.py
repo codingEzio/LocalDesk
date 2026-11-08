@@ -256,6 +256,16 @@ def main():
         safe_relative(target)
     if not names or names != sorted(set(names)) or MANIFEST not in names:
         raise ValueError("Manifest must contain a sorted unique file list including itself")
+    if args.index:
+        # A canonical source checkout must not silently exclude newly tracked or
+        # unignored files from review. Exported sealed copies use their receipt.
+        result = subprocess.run(
+            ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+            cwd=ROOT, check=True, capture_output=True,
+        )
+        discovered = set(result.stdout.decode("utf-8").split("\0")) - {""}
+        if discovered != set(names):
+            raise ValueError("Git source inventory differs from the reviewed manifest")
     if args.release and manifest["releaseBlockers"]:
         raise ValueError("Release blocked: " + "; ".join(manifest["releaseBlockers"]))
     rows = []

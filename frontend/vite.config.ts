@@ -1,24 +1,32 @@
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { networkInterfaces } from "node:os";
 import { resolve } from "node:path";
 import { Readable } from "node:stream";
 import { fileURLToPath } from "node:url";
 import { createWebHandler } from "../backend/web.ts";
+import { dataDirectory, settingsOverride } from "../backend/runtime_paths.ts";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const defaultsPath = resolve(root, "config/settings.json");
-const overridePath = resolve(
-  root,
-  process.env.LOCALDESK_CONFIG || "config/settings.local.json",
-);
+const dataRoot = dataDirectory(root);
+const overridePath = settingsOverride(root);
+let overrides: Record<string, unknown> = {};
+try {
+  overrides = JSON.parse(readFileSync(overridePath, "utf8"));
+} catch (error) {
+  if (
+    process.env.LOCALDESK_CONFIG ||
+    (error as NodeJS.ErrnoException).code !== "ENOENT"
+  ) {
+    throw error;
+  }
+}
 const settings = {
   ...JSON.parse(readFileSync(defaultsPath, "utf8")),
-  ...(process.env.LOCALDESK_CONFIG || existsSync(overridePath)
-    ? JSON.parse(readFileSync(overridePath, "utf8"))
-    : {}),
+  ...overrides,
 };
 for (const key of ["frontendPort", "backendPort"]) {
   if (
@@ -79,7 +87,7 @@ export default defineConfig({
         }
         void (async () => {
           const token =
-            (await readFile(resolve(root, "Local/capability"), "utf8"))
+            (await readFile(resolve(dataRoot, "capability"), "utf8"))
               .trim();
           if (!token) throw new Error("Local capability is unavailable");
           const handler = createWebHandler({

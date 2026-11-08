@@ -1,4 +1,5 @@
-import { resolveWorkspace } from "./workspaces.ts";
+import { knownWorkspaceSource, resolveWorkspace } from "./workspaces.ts";
+import { integrations } from "./integrations.ts";
 import { join } from "node:path";
 import {
   atomicJson,
@@ -21,6 +22,7 @@ export type Job = {
   id: string;
   prompt: string;
   createdAt: string;
+  queueOrder?: number;
   startedAt?: string;
   endedAt?: string;
   state: State;
@@ -60,8 +62,10 @@ export class Jobs {
   stopping = false;
   timer?: ReturnType<typeof setTimeout>;
   private serial: Promise<unknown> = Promise.resolve();
+  private queueSequence = 0;
   async init() {
-    const legacyWorkspace = settings.workspace;
+    const legacyWorkspace = integrations.workspaceCanonical() ??
+      settings.workspace;
     await Deno.mkdir(join(local, "jobs"), { recursive: true, mode: 0o700 });
     for await (const file of Deno.readDir(join(local, "jobs"))) {
       if (!file.isFile || !file.name.endsWith(".json")) continue;
@@ -70,6 +74,12 @@ export class Jobs {
         null,
       );
       if (!job) continue;
+      if (job.queueOrder !== undefined) {
+        if (!Number.isSafeInteger(job.queueOrder) || job.queueOrder < 1) {
+          throw new Error("Invalid persisted queue order");
+        }
+        this.queueSequence = Math.max(this.queueSequence, job.queueOrder);
+      }
       if (!job.workspace) {
         job.workspace = legacyWorkspace;
         await this.save(job);
@@ -123,15 +133,25 @@ export class Jobs {
     this.serial = next.catch(() => {});
     return next;
   }
+  private async ensureChatWorkspace(chat: Chat, target: string) {
+    if (chat.workspace === target) return;
+    if (
+      chat.workspace === settings.workspace &&
+      integrations.workspaceCanonical() === target
+    ) {
+      chat.workspace = target;
+      await this.saveChats();
+      return;
+    }
+    throw new Error("Chat belongs to a different workspace");
+  }
   createChat(id: string, title = "", workspace?: string) {
     return this.enqueue(async () => {
       if (!/^[a-f0-9-]{36}$/.test(id)) throw new Error("Invalid chat ID");
       const existing = this.chats.find((c) => c.id === id);
       const target = await resolveWorkspace(workspace ?? existing?.workspace);
       if (existing) {
-        if (existing.workspace !== target) {
-          throw new Error("Chat belongs to a different workspace");
-        }
+        await this.ensureChatWorkspace(existing, target);
         return existing;
       }
       const now = new Date().toISOString();
@@ -307,6 +327,9 @@ export class Jobs {
         this.records.filter((j) => ["queued", "running"].includes(j.state))
           .length >= settings.maxQueuedJobs
       ) throw new Error("Queue full");
+      if (this.queueSequence >= Number.MAX_SAFE_INTEGER) {
+        throw new Error("Queue order exhausted");
+      }
       const selected = await resolveExecution(execution);
       let chat = chatId
         ? this.chats.find((c) => c.id === chatId)
@@ -315,9 +338,7 @@ export class Jobs {
         : undefined;
       if (chatId && !chat) throw new Error("Unknown chat");
       const target = await resolveWorkspace(workspace ?? chat?.workspace);
-      if (chat && chat.workspace !== target) {
-        throw new Error("Chat belongs to a different workspace");
-      }
+      if (chat) await this.ensureChatWorkspace(chat, target);
       if (resumeThread && chat && chat.threadId !== resumeThread) {
         throw new Error("Thread does not belong to this chat");
       }
@@ -348,6 +369,7 @@ export class Jobs {
         id,
         prompt,
         createdAt: new Date().toISOString(),
+        queueOrder: this.queueSequence + 1,
         state: "queued",
         events: [],
         resumeThread,
@@ -357,6 +379,7 @@ export class Jobs {
         requestKey,
       };
       await this.save(j);
+      this.queueSequence = j.queueOrder!;
       this.records.unshift(j);
       queueMicrotask(() => this.pump());
       return j;
@@ -419,8 +442,28 @@ export class Jobs {
   }
   async pump() {
     if (this.busy || this.stopping) return;
-    const j = [...this.records].reverse().find((j) => j.state === "queued");
+    const j =
+      this.records.filter((job) => job.state === "queued").sort((a, b) => {
+        if (a.queueOrder !== undefined && b.queueOrder !== undefined) {
+          return a.queueOrder - b.queueOrder || a.id.localeCompare(b.id);
+        }
+        if (a.queueOrder !== undefined) return 1;
+        if (b.queueOrder !== undefined) return -1;
+        // Old records have no sequence. Preserve their known time order; ties
+        // have no recoverable original order and use an ID for stable replay.
+        return a.createdAt.localeCompare(b.createdAt) ||
+          a.id.localeCompare(b.id);
+      })[0];
     if (!j) return;
+    const source = knownWorkspaceSource(j.workspace ?? settings.workspace);
+    if (
+      (source && !integrations.connected(source)) ||
+      (!source &&
+        (!integrations.connected("workspace") ||
+          !integrations.connected("projects")))
+    ) {
+      return; // Keep the oldest request queued until its source is available.
+    }
     this.busy = true;
     this.active = j;
     let raw: Deno.FsFile | undefined;
@@ -437,9 +480,7 @@ export class Jobs {
       j.startedAt = new Date().toISOString();
       await this.save(j);
       const workspace = await resolveWorkspace(j.workspace);
-      if (chat && chat.workspace !== workspace) {
-        throw new Error("Queued workspace no longer matches the chat");
-      }
+      if (chat) await this.ensureChatWorkspace(chat, workspace);
       const finalPath = join(local, "jobs", j.id + ".txt");
       const args = [
         "exec",

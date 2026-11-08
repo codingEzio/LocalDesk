@@ -19,8 +19,8 @@ Source connections in Settings apply immediately and survive restart. Disconnect
 Workspace sources to stop catalog/skill access, or Projects and runtime to stop
 project discovery. New work for a disconnected source is disabled; saved history
 is retained. Finish or stop queued/running work in Activity before
-disconnecting. Module switches control visibility only. Path changes still
-require a restart. See the
+disconnecting. Module switches control visibility only. Other configured paths
+or external commands can still access files. Path changes require a restart. See the
 [connection contract](docs/CONFIGURATION.md#connect-and-disconnect-private-integrations).
 
 ![Read-only discovery](assets/flow-sources-en.svg)

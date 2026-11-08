@@ -17,7 +17,7 @@ LocalDesk 0.2.1 是採用 [MIT 授權](LICENSE) 的獨立本機工作區，使�
 設定中的「來源連線」立即生效並於重啟後保留。「工作區來源」控制目錄／技能讀取；
 「專案與執行狀態」控制專案探索。拔除後停止讀取與新工作，已存歷史仍保留。
 請先在活動頁完成或停止排隊／執行中的工作，再拔除。模組開關僅控制顯示；
-變更路徑仍需重啟。詳見[連線契約](docs/CONFIGURATION.md#connect-and-disconnect-private-integrations)。
+其他已設定路徑或外部指令仍可能存取檔案；變更路徑需重啟。詳見[連線契約](docs/CONFIGURATION.md#connect-and-disconnect-private-integrations)。
 
 ![唯讀探索](assets/flow-sources-zh-TW.svg)
 

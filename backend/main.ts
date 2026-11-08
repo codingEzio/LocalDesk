@@ -15,10 +15,21 @@ import { Skills } from "./skills.ts";
 const skills = new Skills();
 import { Jobs } from "./jobs.ts";
 import { Workbench } from "./workbench.ts";
+import {
+  knownWorkspaceSource,
+  refreshSourcePaths,
+  workspaceSource,
+} from "./workspaces.ts";
 const token = await capability();
 const catalog = new Catalog();
 const jobs = new Jobs();
 const workbench = new Workbench();
+function withSkillsSources<T>(action: () => Promise<T>): Promise<T> {
+  return integrations.read(
+    "workspace",
+    () => integrations.read("projects", action),
+  );
+}
 void workbench.start();
 let jobsReady = false;
 const allowedOrigin = localOriginPolicy(ports.frontend, [
@@ -95,8 +106,7 @@ const server = Deno.serve(
         if (!trusted) return json({ error: "Local capability required" }, 403);
         if (path === "/api/skills" && req.method === "GET") {
           return json(
-            await integrations.read(
-              "workspace",
+            await withSkillsSources(
               () => skills.list(url.searchParams.get("fresh") === "1"),
             ),
           );
@@ -105,33 +115,31 @@ const server = Deno.serve(
           const input = await body(req);
           if (path === "/api/skills/preview") {
             return json(
-              await integrations.read("workspace", () => skills.preview(input)),
+              await withSkillsSources(() => skills.preview(input)),
             );
           }
           if (path === "/api/skills/apply") {
             return json(
-              await integrations.read(
-                "workspace",
+              await withSkillsSources(
                 () => skills.apply(input.id, input.selected),
               ),
             );
           }
           if (path === "/api/skills/assignment") {
             return json(
-              await integrations.read("workspace", () => skills.assign(input)),
+              await withSkillsSources(() => skills.assign(input)),
             );
           }
           if (path === "/api/skills/categories") {
             return json(
-              await integrations.read(
-                "workspace",
+              await withSkillsSources(
                 () => skills.saveCategories(input),
               ),
             );
           }
           if (path === "/api/skills/recover") {
             return json(
-              await integrations.read("workspace", () => skills.recover()),
+              await withSkillsSources(() => skills.recover()),
             );
           }
         }
@@ -166,7 +174,12 @@ const server = Deno.serve(
           ready: jobsReady,
           canControl: trusted && jobsReady,
           jobs: trusted ? jobs.list() : [],
-          chats: trusted ? jobs.chatList() : [],
+          chats: trusted
+            ? jobs.chatList().map((chat) => ({
+              ...chat,
+              sourceId: knownWorkspaceSource(chat.workspace),
+            }))
+            : [],
           limits: {
             queue: settings.maxQueuedJobs,
             minutes: settings.maxJobMinutes,
@@ -185,8 +198,15 @@ const server = Deno.serve(
             ),
         );
         if (input.connected) {
-          if (input.id === "workspace") await catalog.scan();
-          else await workbench.refresh();
+          await refreshSourcePaths();
+          if (
+            input.id === "workspace" || input.id === "projects" ||
+            input.id === "both"
+          ) await catalog.scan();
+          if (input.id === "projects" || input.id === "both") {
+            await workbench.refresh();
+          }
+          void jobs.pump();
         }
         return json({ integrations: integrations.view() });
       }
@@ -206,7 +226,10 @@ const server = Deno.serve(
             "enabled must be boolean",
           );
         }
-        await catalog.enable(b.id, b.enabled);
+        await integrations.read(
+          "workspace",
+          () => catalog.enable(b.id, b.enabled),
+        );
         return json({ ok: true });
       }
       if (path === "/api/jobs" && req.method === "POST") {
@@ -216,12 +239,11 @@ const server = Deno.serve(
         ) throw new Error("Invalid job");
         return json(
           await integrations.read(
-            (b.workspace ?? jobs.chats.find((c) =>
+            await workspaceSource(
+              b.workspace ?? jobs.chats.find((c) =>
                 c.id === b.chatId
-              )?.workspace ??
-                settings.workspace) === settings.workspace
-              ? "workspace"
-              : "projects",
+              )?.workspace ?? settings.workspace,
+            ),
             () =>
               jobs.submit(
                 b.id,
@@ -243,9 +265,7 @@ const server = Deno.serve(
         ) throw new Error("Invalid chat");
         return json(
           await integrations.read(
-            (b.workspace ?? settings.workspace) === settings.workspace
-              ? "workspace"
-              : "projects",
+            await workspaceSource(b.workspace ?? settings.workspace),
             () => jobs.createChat(b.id, b.title, b.workspace),
           ),
           201,
@@ -278,11 +298,15 @@ const server = Deno.serve(
         }
         return json(
           await integrations.read(
-            (jobs.chats.find((c) => c.id === chatMatch[1])?.workspace ??
-                settings.workspace) === settings.workspace
-              ? "workspace"
-              : "projects",
-            () => jobs.archiveChat(chatMatch[1], b.archived),
+            "workspace",
+            async () =>
+              await integrations.read(
+                await workspaceSource(
+                  jobs.chats.find((c) => c.id === chatMatch[1])?.workspace ??
+                    settings.workspace,
+                ),
+                () => jobs.archiveChat(chatMatch[1], b.archived),
+              ),
           ),
         );
       }

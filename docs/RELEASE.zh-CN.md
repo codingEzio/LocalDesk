@@ -1,10 +1,10 @@
-# LocalDesk 0.2.1 — 已备妥的源码候选
+# LocalDesk 源码发布
 
 [English](RELEASE.md) · [繁體中文](RELEASE.zh-TW.md)
 
 LocalDesk 原创代码和文档采用 MIT，版权为 2026 LocalDesk contributors。
 内附的修改字体和另行获取的依赖保留各自条款。请保留 LICENSE、NOTICE.md
-和完整字体／声明目录。这次准备不代表已公开仓库、更改远程可见性或更新正式服务。
+和完整字体／声明目录。生成导出不会公开仓库、更改远程可见性或更新正式服务。
 
 ## 内容与功能
 
@@ -19,7 +19,7 @@ LocalDesk 原创代码和文档采用 MIT，版权为 2026 LocalDesk contributor
 
 ## 复现与验证
 
-在准备仓库执行 deno task source-check --index 检查具名源码和索引内容； deno task
+在源码仓库执行 deno task source-check --index 检查具名源码和索引内容； deno task
 source-export --index 在忽略的 Local/public-candidates/ 生成源码封存、 ZIP 和
 .zip.sha256。ZIP 固定根目录为 localdesk-source/，时间戳规范化，
 逐项读回内容、权限、清单和 receipt；既有产物不符时拒绝覆盖。归档器只需 Python 3

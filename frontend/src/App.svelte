@@ -84,7 +84,8 @@ $: {
 $: chat = data?.chats?.find((c: any) => c.id === activeChatId);
 $: activeWorkspace = chat?.workspace || data?.workspace ||
   "";
-$: sourceAvailable = data?.integrations?.find((s: any) => s.id === (activeWorkspace === data?.workspace ? "workspace" : "projects"))?.connected !== false;
+$: sourceId = chat ? chat.sourceId : "workspace";
+$: sourceAvailable = !!sourceId && !!data?.integrations?.find((s: any) => s.id === sourceId)?.connected;
 $: chosen = data?.runner?.presets?.find((p: any) => p.name === chosenPreset);
 $: {
   localStorage.setItem("localdesk-preset", chosenPreset);
@@ -438,13 +439,13 @@ onMount(() => {
     {#if !cards.length}<div class="empty-board"><Search size={30}/><p>{data?.catalog?.connected===false?t('sourceOffline'):data?t('noMatch'):t('loading')}</p></div>{/if}
    </section>
   {:else if view==='skills'}
-   {#if data?.catalog?.connected!==false}<Skills {lang} />{:else}<p class="muted-note">{t('sourceOffline')}</p>{/if}
+   {#if data?.integrations?.length===2 && data.integrations.every((source: any)=>source.connected)}<Skills {lang} />{:else}<p class="muted-note" role="status">{data?t('sourceSafety'):t('loading')}</p>{/if}
   {:else if view==='modules'}
    <div class="page-heading"><span class="eyebrow">{t('moduleVisibility')}</span><h1>{t('moduleTitle')}</h1><p>{t('moduleCaption')}</p></div>
    <section class="module-settings">{#each plugins as p}{@const Icon=icons[p.icon]??Folder}<div class="setting-module"><Icon size={24}/><div><h3>{title(p)}</h3><code>{p.path}</code></div><span class="module-amount">{p.items.length} {t('items')}</span><button class="switch" class:enabled={p.enabled} role="switch" aria-checked={p.enabled} aria-label={title(p)} disabled={!data?.canControl||data?.catalog?.connected===false} onclick={()=>toggle(p)}><i></i></button></div>{/each}</section><p class="muted-note">{t('moduleHint')}</p>
   {:else}
    {#if !sourceAvailable}<p class="muted-note" role="status">{t('sourceOffline')}</p>{/if}
-   <ChatPanel chats={data?.chats??[]} activeId={activeChatId} turns={chatTurns} {t} {date} onSelect={chooseChat} onNew={()=>newChat()} onArchive={archiveChat} onDetails={showJob} onStop={stop} actionId={chatActionId} canControl={!!data?.canControl&&sourceAvailable} workspace={activeWorkspace}/>
+   <ChatPanel chats={data?.chats??[]} activeId={activeChatId} turns={chatTurns} {t} {date} onSelect={chooseChat} onNew={()=>newChat()} onArchive={archiveChat} onDetails={showJob} onStop={stop} actionId={chatActionId} canControl={!!data?.canControl&&sourceAvailable} canArchive={!!data?.canControl&&sourceAvailable&&!!data?.integrations?.find((s: any)=>s.id==="workspace")?.connected} workspace={activeWorkspace}/>
   {/if}
   <div class="status-line"><span><i></i>{data?t('online'):t('loading')}</span><span>{t('lastScan')} {date(data?.catalog?.scannedAt)}<b>·</b>{t('scanTime')} {Math.round(data?.catalog?.durationMs??0)} ms<b>·</b>{t('response')} {Math.round(responseMs)} ms</span>{#if data?.catalog?.errors?.length}<button onclick={()=>error=data.catalog.errors.join('\n')}>{t('scanError')}</button>{/if}</div>
   <section class="command-dock" aria-label={t('prompt')}>

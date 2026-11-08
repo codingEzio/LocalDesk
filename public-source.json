@@ -26,6 +26,90 @@
       "target": "NOTICE.md"
     },
     {
+      "source": "README.es.md",
+      "target": "README.es.md"
+    },
+    {
+      "source": "README.ja.md",
+      "target": "README.ja.md"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "README.ko.md"
+    },
+    {
+      "source": "README.md",
+      "target": "README.md"
+    },
+    {
+      "source": "README.zh-CN.md",
+      "target": "README.zh-CN.md"
+    },
+    {
+      "source": "README.zh-TW.md",
+      "target": "README.zh-TW.md"
+    },
+    {
+      "source": "assets/flow-queue-en.svg",
+      "target": "assets/flow-queue-en.svg"
+    },
+    {
+      "source": "assets/flow-queue-es.svg",
+      "target": "assets/flow-queue-es.svg"
+    },
+    {
+      "source": "assets/flow-queue-ja.svg",
+      "target": "assets/flow-queue-ja.svg"
+    },
+    {
+      "source": "assets/flow-queue-ko.svg",
+      "target": "assets/flow-queue-ko.svg"
+    },
+    {
+      "source": "assets/flow-queue-zh-CN.svg",
+      "target": "assets/flow-queue-zh-CN.svg"
+    },
+    {
+      "source": "assets/flow-queue-zh-TW.svg",
+      "target": "assets/flow-queue-zh-TW.svg"
+    },
+    {
+      "source": "assets/flow-sources-en.svg",
+      "target": "assets/flow-sources-en.svg"
+    },
+    {
+      "source": "assets/flow-sources-es.svg",
+      "target": "assets/flow-sources-es.svg"
+    },
+    {
+      "source": "assets/flow-sources-ja.svg",
+      "target": "assets/flow-sources-ja.svg"
+    },
+    {
+      "source": "assets/flow-sources-ko.svg",
+      "target": "assets/flow-sources-ko.svg"
+    },
+    {
+      "source": "assets/flow-sources-zh-CN.svg",
+      "target": "assets/flow-sources-zh-CN.svg"
+    },
+    {
+      "source": "assets/flow-sources-zh-TW.svg",
+      "target": "assets/flow-sources-zh-TW.svg"
+    },
+    {
+      "source": "assets/icon-source.json",
+      "target": "assets/icon-source.json"
+    },
+    {
+      "source": "assets/icon.svg",
+      "target": "assets/icon.svg"
+    },
+    {
+      "source": "backend/atomic_json.ts",
+      "target": "backend/atomic_json.ts"
+    },
+    {
       "source": "backend/catalog.ts",
       "target": "backend/catalog.ts"
     },
@@ -64,6 +148,10 @@
     {
       "source": "backend/projects/backend/loc_job.ts",
       "target": "backend/projects/backend/loc_job.ts"
+    },
+    {
+      "source": "backend/projects/backend/loc_profile.ts",
+      "target": "backend/projects/backend/loc_profile.ts"
     },
     {
       "source": "backend/projects/backend/runtime.ts",
@@ -130,6 +218,10 @@
       "target": "config/settings.json"
     },
     {
+      "source": "config/skill_categories.json",
+      "target": "config/skill_categories.json"
+    },
+    {
       "source": "config/skill_management.json",
       "target": "config/skill_management.json"
     },
@@ -148,6 +240,10 @@
     {
       "source": "docs/DEPENDENCY-LICENSES.json",
       "target": "docs/DEPENDENCY-LICENSES.json"
+    },
+    {
+      "source": "docs/PRIVACY-AUDIT.md",
+      "target": "docs/PRIVACY-AUDIT.md"
     },
     {
       "source": "docs/RELEASE.md",
@@ -398,120 +494,8 @@
       "target": "public-source.json"
     },
     {
-      "source": "public/PRIVACY-AUDIT.md",
-      "target": "docs/PRIVACY-AUDIT.md"
-    },
-    {
-      "source": "public/README.es.md",
-      "target": "README.es.md"
-    },
-    {
-      "source": "public/README.ja.md",
-      "target": "README.ja.md"
-    },
-    {
-      "source": "public/README.ko.md",
-      "target": "README.ko.md"
-    },
-    {
-      "source": "public/README.md",
-      "target": "README.md"
-    },
-    {
-      "source": "public/README.zh-CN.md",
-      "target": "README.zh-CN.md"
-    },
-    {
-      "source": "public/README.zh-TW.md",
-      "target": "README.zh-TW.md"
-    },
-    {
-      "source": "public/assets/flow-queue-en.svg",
-      "target": "assets/flow-queue-en.svg"
-    },
-    {
-      "source": "public/assets/flow-queue-es.svg",
-      "target": "assets/flow-queue-es.svg"
-    },
-    {
-      "source": "public/assets/flow-queue-ja.svg",
-      "target": "assets/flow-queue-ja.svg"
-    },
-    {
-      "source": "public/assets/flow-queue-ko.svg",
-      "target": "assets/flow-queue-ko.svg"
-    },
-    {
-      "source": "public/assets/flow-queue-zh-CN.svg",
-      "target": "assets/flow-queue-zh-CN.svg"
-    },
-    {
-      "source": "public/assets/flow-queue-zh-TW.svg",
-      "target": "assets/flow-queue-zh-TW.svg"
-    },
-    {
-      "source": "public/assets/flow-sources-en.svg",
-      "target": "assets/flow-sources-en.svg"
-    },
-    {
-      "source": "public/assets/flow-sources-es.svg",
-      "target": "assets/flow-sources-es.svg"
-    },
-    {
-      "source": "public/assets/flow-sources-ja.svg",
-      "target": "assets/flow-sources-ja.svg"
-    },
-    {
-      "source": "public/assets/flow-sources-ko.svg",
-      "target": "assets/flow-sources-ko.svg"
-    },
-    {
-      "source": "public/assets/flow-sources-zh-CN.svg",
-      "target": "assets/flow-sources-zh-CN.svg"
-    },
-    {
-      "source": "public/assets/flow-sources-zh-TW.svg",
-      "target": "assets/flow-sources-zh-TW.svg"
-    },
-    {
-      "source": "public/assets/icon-source.json",
-      "target": "assets/icon-source.json"
-    },
-    {
-      "source": "public/assets/icon.svg",
-      "target": "assets/icon.svg"
-    },
-    {
-      "source": "public/audit-source.ts",
+      "source": "scripts/audit-source.ts",
       "target": "scripts/audit-source.ts"
-    },
-    {
-      "source": "public/projects/loc_count.test.ts",
-      "target": "tests/projects/loc_count.test.ts"
-    },
-    {
-      "source": "public/projects/loc_profile.test.ts",
-      "target": "tests/projects/loc_profile.test.ts"
-    },
-    {
-      "source": "public/projects/loc_profile.ts",
-      "target": "backend/projects/backend/loc_profile.ts"
-    },
-    {
-      "source": "public/projects/scan.test.ts",
-      "target": "tests/projects/scan.test.ts"
-    },
-    {
-      "source": "public/service_test.ts",
-      "target": "tests/service_test.ts"
-    },
-    {
-      "source": "public/skill_categories.json",
-      "target": "config/skill_categories.json"
-    },
-    {
-      "source": "public/skills_e2e_test.ts",
-      "target": "tests/skills_e2e_test.ts"
     },
     {
       "source": "scripts/doctor.ts",
@@ -538,6 +522,14 @@
       "target": "tests/agent_flow_test.ts"
     },
     {
+      "source": "tests/atomic_json_test.ts",
+      "target": "tests/atomic_json_test.ts"
+    },
+    {
+      "source": "tests/integration_overlap_test.ts",
+      "target": "tests/integration_overlap_test.ts"
+    },
+    {
       "source": "tests/integrations_e2e_test.ts",
       "target": "tests/integrations_e2e_test.ts"
     },
@@ -562,20 +554,60 @@
       "target": "tests/projects/git_snapshot.test.ts"
     },
     {
+      "source": "tests/projects/loc_count.test.ts",
+      "target": "tests/projects/loc_count.test.ts"
+    },
+    {
+      "source": "tests/projects/loc_profile.test.ts",
+      "target": "tests/projects/loc_profile.test.ts"
+    },
+    {
       "source": "tests/projects/runtime_facts.test.ts",
       "target": "tests/projects/runtime_facts.test.ts"
+    },
+    {
+      "source": "tests/projects/scan.test.ts",
+      "target": "tests/projects/scan.test.ts"
     },
     {
       "source": "tests/public_source_test.py",
       "target": "tests/public_source_test.py"
     },
     {
+      "source": "tests/queue_api_revalidation_test.ts",
+      "target": "tests/queue_api_revalidation_test.ts"
+    },
+    {
+      "source": "tests/queue_order_test.ts",
+      "target": "tests/queue_order_test.ts"
+    },
+    {
+      "source": "tests/queue_revalidation_test.ts",
+      "target": "tests/queue_revalidation_test.ts"
+    },
+    {
+      "source": "tests/service_test.ts",
+      "target": "tests/service_test.ts"
+    },
+    {
       "source": "tests/settings_test.ts",
       "target": "tests/settings_test.ts"
     },
     {
+      "source": "tests/skills_e2e_test.ts",
+      "target": "tests/skills_e2e_test.ts"
+    },
+    {
+      "source": "tests/source_reconfiguration_test.ts",
+      "target": "tests/source_reconfiguration_test.ts"
+    },
+    {
       "source": "tests/static_web_test.ts",
       "target": "tests/static_web_test.ts"
+    },
+    {
+      "source": "tests/vite_proxy_e2e_test.ts",
+      "target": "tests/vite_proxy_e2e_test.ts"
     }
   ],
   "releaseBlockers": []

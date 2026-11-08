@@ -2,6 +2,7 @@ import { loadSettings } from "./settings.ts";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { dataDirectory } from "./runtime_paths.ts";
+export { atomicJson } from "./atomic_json.ts";
 export const root = dirname(dirname(fileURLToPath(import.meta.url)));
 export const settings = await loadSettings(root);
 export const local = dataDirectory(root);
@@ -18,13 +19,6 @@ export const json = (body: unknown, status = 200) =>
       "x-content-type-options": "nosniff",
     },
   });
-export async function atomicJson(path: string, value: unknown) {
-  const tmp = path + ".tmp";
-  await Deno.writeTextFile(tmp, JSON.stringify(value, null, 2) + "\n", {
-    mode: 0o600,
-  });
-  await Deno.rename(tmp, path);
-}
 export async function loadJson<T>(path: string, fallback: T): Promise<T> {
   try {
     return JSON.parse(await Deno.readTextFile(path));

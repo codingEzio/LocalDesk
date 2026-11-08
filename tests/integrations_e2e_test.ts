@@ -40,10 +40,12 @@ Deno.test("source connections drain reads, preserve data, reject active work and
   const frontendPort = ports[0].addr.port, backendPort = ports[1].addr.port;
   ports.forEach((listener) => listener.close());
   const workspace = join(base, "workspace"),
+    workspaceLink = join(base, "workspace-link"),
     projectsRoot = join(base, "projects");
   for (const name of ["config", "scripts", "skills", "services", "tools"]) {
     await Deno.mkdir(join(workspace, name), { recursive: true });
   }
+  await Deno.symlink(workspace, workspaceLink);
   await Deno.writeTextFile(join(workspace, "Brewfile"), 'brew "fixture-one"\n');
   await Deno.mkdir(join(projectsRoot, "X-Fixture"), { recursive: true });
   await Deno.writeTextFile(
@@ -54,6 +56,18 @@ Deno.test("source connections drain reads, preserve data, reject active work and
   await Deno.writeTextFile(
     join(workspace, "skills", "fixture-skill", "SKILL.md"),
     "---\nname: fixture-skill\ndescription: Synthetic fixture\n---\nFixture\n",
+  );
+  await Deno.mkdir(local);
+  const legacyChatId = crypto.randomUUID();
+  await Deno.writeTextFile(
+    join(local, "chats.json"),
+    JSON.stringify([{
+      id: legacyChatId,
+      title: "Legacy fixture",
+      createdAt: "2020-01-01T00:00:00Z",
+      updatedAt: "2020-01-01T00:00:00Z",
+      archived: false,
+    }]),
   );
   const modelsFile = join(base, "models.json"),
     runner = join(base, "fake-codex");
@@ -77,7 +91,7 @@ Deno.test("source connections drain reads, preserve data, reject active work and
     join(root, "config/settings.json"),
     JSON.stringify({
       ...defaults,
-      workspace,
+      workspace: workspaceLink,
       projectsRoot,
       frontendPort,
       backendPort,
@@ -161,8 +175,91 @@ Deno.test("source connections drain reads, preserve data, reject active work and
       initial.catalog.plugins.find((p: { id: string }) => p.id === "software")
         .items.some((p: { name: string }) => p.name === "fixture-one"),
     );
+    assertEquals(
+      (await api("/api/state")).body.chats.find((c: { id: string }) =>
+        c.id === legacyChatId
+      ).sourceId,
+      "workspace",
+    );
+    assertEquals(
+      (await api("/api/integrations", { id: "both", connected: false })).status,
+      200,
+    );
+    assertEquals(
+      (await api("/api/state")).body.integrations.map((
+        x: { connected: boolean },
+      ) => x.connected),
+      [false, false],
+    );
+    assertEquals(
+      (await api("/api/integrations", { id: "both", connected: true })).status,
+      200,
+    );
+    const legacyJob = crypto.randomUUID();
+    assertEquals(
+      (await api("/api/jobs", {
+        id: legacyJob,
+        chatId: legacyChatId,
+        prompt: "Legacy fixture",
+      })).status,
+      202,
+    );
+    await api("/api/jobs/" + legacyJob + "/cancel", {});
+    await wait(async () =>
+      !(await api("/api/state")).body.jobs.some((j: { state: string }) =>
+        ["queued", "running"].includes(j.state)
+      )
+    );
     const chatId = crypto.randomUUID();
     assertEquals((await api("/api/chats", { id: chatId })).status, 201);
+    assertEquals(
+      (await api("/api/state")).body.chats.find((c: { id: string }) =>
+        c.id === chatId
+      ).sourceId,
+      "workspace",
+    );
+    assertEquals(
+      (await api("/api/integrations", { id: "projects", connected: false }))
+        .status,
+      200,
+    );
+    const crossSkills = join(projectsRoot, "X-Fixture", "skills");
+    await Deno.mkdir(crossSkills, { recursive: true });
+    await Deno.writeTextFile(
+      join(local, "skills.local.json"),
+      JSON.stringify({ skillsRoot: crossSkills }),
+    );
+    assertEquals((await api("/api/skills?fresh=1")).status, 400);
+    assertEquals((await api("/api/skills/recover", {})).status, 400);
+    await api("/api/refresh", {});
+    assertEquals(
+      (await api("/api/state")).body.catalog.plugins.some((p: { id: string }) =>
+        p.id === "skills"
+      ),
+      false,
+    );
+    await Deno.remove(join(local, "skills.local.json"));
+    const aliasJob = crypto.randomUUID();
+    assertEquals(
+      (await api("/api/jobs", {
+        id: aliasJob,
+        chatId,
+        prompt: "Synthetic alias",
+      })).status,
+      202,
+    );
+    await api("/api/jobs/" + aliasJob + "/cancel", {});
+    await wait(async () =>
+      !(await api("/api/state")).body.jobs.some((j: { state: string }) =>
+        ["queued", "running"].includes(j.state)
+      )
+    );
+    assertEquals(
+      (await api("/api/integrations", { id: "projects", connected: true }))
+        .status,
+      200,
+    );
+    assertEquals((await api("/api/skills?fresh=1")).status, 200);
     const jobId = crypto.randomUUID(), queuedId = crypto.randomUUID();
     assertEquals(
       (await api("/api/jobs", { id: jobId, chatId, prompt: "Synthetic hold" }))
@@ -194,12 +291,26 @@ Deno.test("source connections drain reads, preserve data, reject active work and
         ["queued", "running"].includes(j.state)
       )
     );
-    for (const id of ["workspace", "projects"]) {
-      assertEquals(
-        (await api("/api/integrations", { id, connected: false })).status,
-        200,
-      );
-    }
+    assertEquals(
+      (await api("/api/integrations", { id: "workspace", connected: false }))
+        .status,
+      200,
+    );
+    const projectAlias = join(projectsRoot, "AliasToWorkspace");
+    await Deno.symlink(workspace, projectAlias);
+    assertEquals(
+      (await api("/api/chats", {
+        id: crypto.randomUUID(),
+        workspace: projectAlias,
+      })).status,
+      400,
+    );
+    await Deno.remove(projectAlias);
+    assertEquals(
+      (await api("/api/integrations", { id: "projects", connected: false }))
+        .status,
+      200,
+    );
     const disconnected = (await api("/api/state")).body;
     assertEquals(disconnected.catalog.plugins, []);
     assertEquals(disconnected.workspaces, []);
@@ -211,6 +322,10 @@ Deno.test("source connections drain reads, preserve data, reject active work and
     await Deno.rename(workspace, workspace + "-unmounted");
     await Deno.rename(projectsRoot, projectsRoot + "-unmounted");
     assertEquals((await api("/api/skills?fresh=1")).status, 400);
+    assertEquals(
+      (await api("/api/modules", { id: "software", enabled: false })).status,
+      400,
+    );
     assertEquals(
       (await api("/api/skills/preview", {
         folder: "fixture-skill",
@@ -262,6 +377,17 @@ Deno.test("source connections drain reads, preserve data, reject active work and
     assert(missing.catalog.connected);
     assert(missing.catalog.plugins.some((p: { error?: string }) => p.error));
     await api("/api/integrations", { id: "workspace", connected: false });
+    const alternative = join(base, "different-workspace");
+    await Deno.mkdir(alternative);
+    await Deno.remove(workspaceLink);
+    await Deno.symlink(alternative, workspaceLink);
+    assertEquals(
+      (await api("/api/integrations", { id: "workspace", connected: true }))
+        .status,
+      400,
+    );
+    await Deno.remove(workspaceLink);
+    await Deno.symlink(workspace, workspaceLink);
     await Deno.rename(workspace + "-unmounted", workspace);
     await Deno.rename(projectsRoot + "-unmounted", projectsRoot);
     await Deno.writeTextFile(

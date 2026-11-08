@@ -39,7 +39,7 @@ deno task start
 
 `<data>` 기본값은 macOS `~/Library/Application Support/LocalDesk`, Linux XDG, Windows Local AppData입니다. `LOCALDESK_DATA`로 다른 프로필을 선택하며 상대값은 checkout 기준입니다. 설정, `skills.local.json`, 능력 토큰, 작업, 대화, SQLite, 스킬 기록과 빈 기본 소스를 여기에 둡니다. `LOCALDESK_CONFIG`는 설정 파일만 바꿉니다. 프로필 변경이 기존 데이터를 이동하지는 않습니다. Local에는 빌드／운영 정의와 로그만 남습니다. 일반 CLI와 설치된 서비스에 같은 프로필을 사용하세요.
 
-Settings의 Workspace sources／Projects and runtime 연결은 읽기와 새 작업을 즉시 멈추고 기록을 보존합니다. 끊기 전에 Activity에서 대기／실행 작업을 마치거나 멈추세요. 표시 스위치만으로 탐색이 중단되지는 않습니다. 경로 변경은 재시작이 필요합니다. `/?view=skills`는 이름／설명／분류와 참조를 포함한 이름 변경 미리보기를 제공하며 쓰기는 명시적 Apply, 해시, 잠금, 복구 기록으로 보호합니다. 링크 대상 메타데이터는 읽기 전용입니다. [설정](docs/CONFIGURATION.md), [스킬 계약](docs/skills.md)을 확인하세요.
+Settings의 Workspace sources／Projects and runtime 연결은 읽기와 새 작업을 즉시 멈추고 기록을 보존합니다. 끊기 전에 Activity에서 대기／실행 작업을 마치거나 멈추세요. 표시 스위치만으로 탐색이 중단되지는 않습니다. 다른 설정 경로나 외부 명령은 파일에 계속 접근할 수 있습니다. 경로 변경은 재시작이 필요합니다. `/?view=skills`는 이름／설명／분류와 참조를 포함한 이름 변경 미리보기를 제공하며 쓰기는 명시적 Apply, 해시, 잠금, 복구 기록으로 보호합니다. 링크 대상 메타데이터는 읽기 전용입니다. [설정](docs/CONFIGURATION.md), [스킬 계약](docs/skills.md)을 확인하세요.
 
 ## 네트워크와 검증
 

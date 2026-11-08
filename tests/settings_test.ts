@@ -72,6 +72,7 @@ Deno.test("setup persists custom sources outside the checkout and preserves them
       const name of [
         "backend/settings.ts",
         "backend/runtime_paths.ts",
+        "backend/atomic_json.ts",
         "scripts/setup.ts",
         "config/settings.json",
       ]
@@ -115,8 +116,8 @@ Deno.test("settings allow a missing optional override but fail for an explicit m
   const previousData = Deno.env.get("LOCALDESK_DATA");
   try {
     Deno.env.delete("LOCALDESK_CONFIG");
-    Deno.env.set("LOCALDESK_DATA", join(root, "private state"));
-    await Deno.mkdir(join(root, "private state"));
+    Deno.env.set("LOCALDESK_DATA", join(root, "Local/private state"));
+    await Deno.mkdir(join(root, "Local/private state"), { recursive: true });
     await Deno.mkdir(join(root, "config"));
     await Deno.writeTextFile(
       join(root, "config/settings.json"),
@@ -124,7 +125,7 @@ Deno.test("settings allow a missing optional override but fail for an explicit m
     );
     assertEquals((await loadSettings(root)).frontendPort, 4100);
     await Deno.writeTextFile(
-      join(root, "private state/settings.local.json"),
+      join(root, "Local/private state/settings.local.json"),
       JSON.stringify({ frontendPort: 4200, workspace: "other" }),
     );
     assertEquals((await loadSettings(root)).workspace, join(root, "other"));

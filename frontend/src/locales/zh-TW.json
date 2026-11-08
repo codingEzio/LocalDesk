@@ -25,7 +25,7 @@
   "inspect": "交給代理查看",
   "moduleTitle": "你的工作方式。",
   "moduleCaption": "選擇需要的來源；新增模組描述檔後，介面會自動發現。",
-  "moduleHint": "這些開關僅隱藏卡片，來源仍會掃描。請在設定的「來源連線」中拔除，以停止讀取。",
+  "moduleHint": "隱藏模組仍會掃描；可在設定中斷開來源，暫停該來源的掃描和相關操作。",
   "close": "關閉",
   "commandPlaceholder": "描述你想做的事…",
   "send": "送出指令",
@@ -136,8 +136,8 @@
   "sourceDisconnect": "拔除",
   "sourceConnect": "連接",
   "sourceChanging": "套用中…",
-  "sourceHint": "立即生效並於重啟後保留。來源路徑由本機設定指定；更換路徑需重啟。隱藏模組仍會掃描，請在此拔除來源以停止讀取。",
-  "sourceRetention": "拔除後不再掃描或用於新工作。已存對話、結果與專案歷史保留於本機；重新連接會再次掃描設定的路徑。",
+  "sourceHint": "斷開會暫停該來源的掃描及相關操作；其他已設定路徑或外部指令仍可能存取檔案。",
+  "sourceRetention": "已存對話、結果與專案歷史保留於本機；重新連接後恢復掃描。",
   "sourceJobs": "請先到活動頁完成或停止排隊中／執行中的工作，再拔除來源。",
   "sourceActivity": "開啟活動頁",
   "sourceOffline": "來源已拔除，已存歷史仍保留。請在設定中重新連接以使用此來源。",
@@ -145,5 +145,10 @@
   "sourceScanError": "已連接，但來源無法使用。請檢查設定路徑與掃描錯誤。",
   "moduleVisibility": "模組顯示",
   "sourceRefreshFailed": "連線已儲存，但畫面無法更新。請重新載入以確認目前來源狀態。",
-  "sourceUnknown": "無法確認連線結果。請先重新載入，確認儲存狀態後再試。"
+  "sourceUnknown": "無法確認連線結果。請先重新載入，確認儲存狀態後再試。",
+  "sourceConnectBoth": "同時連接",
+  "sourceDisconnectBoth": "同時斷開",
+  "sourceOverlap": "兩個來源重疊或無法區分，請同時變更兩個連線。",
+  "sourceSafety": "技能可能參照兩個來源，因此任一來源斷開時技能管理會暫停。",
+  "sourceNeedsBoth": "已斷開來源的路徑發生變更。兩處來源已暫停，請選擇「同時連接」以核驗。"
 }

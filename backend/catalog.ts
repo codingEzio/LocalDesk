@@ -53,7 +53,11 @@ export class Catalog {
   }
   view() {
     return {
-      plugins: integrations.connected("workspace") ? this.plugins : [],
+      plugins: integrations.connected("workspace")
+        ? this.plugins.filter((plugin) =>
+          plugin.id !== "skills" || integrations.connected("projects")
+        )
+        : [],
       connected: integrations.connected("workspace"),
       scannedAt: this.scannedAt,
       durationMs: this.durationMs,
@@ -93,6 +97,7 @@ export class Catalog {
                 raw.version !== 1
               ) throw new Error("Invalid module manifest");
               if (raw.id === "skills") {
+                if (!integrations.connected("projects")) continue;
                 const p: Plugin = {
                   ...raw,
                   enabled: this.preferences[raw.id] ?? raw.enabled !== false,
@@ -100,7 +105,10 @@ export class Catalog {
                 };
                 ids.add(raw.id);
                 try {
-                  const view = await this.skills.list(true) as {
+                  const view = await integrations.read(
+                    "projects",
+                    () => this.skills.list(true),
+                  ) as {
                     source: string;
                     items: { folder: string; path: string; kind: string }[];
                   };

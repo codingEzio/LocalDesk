@@ -39,7 +39,7 @@ deno task start
 
 `<data>` の既定は macOS の `~/Library/Application Support/LocalDesk`、Linux の XDG、Windows の Local AppData です。`LOCALDESK_DATA` で別プロファイルを選び、相対値は checkout 基準です。設定、`skills.local.json`、能力トークン、ジョブ、会話、SQLite、スキル記録、空の既定ソースをここに置きます。`LOCALDESK_CONFIG` は設定ファイルだけを変更します。プロファイル変更は自動移行しません。Local にはビルド／運用定義とログだけを残します。通常 CLI とインストール済みサービスで同じプロファイルを使ってください。
 
-Settings の Workspace sources／Projects and runtime は読取と新規作業を即時停止し、履歴を保持します。切断前に Activity の待機／実行作業を完了または停止してください。表示スイッチだけでは探索を停止しません。パス変更は再起動が必要です。スキル管理 `/?view=skills` は名称・説明・分類・参照付き改名プレビューを持ち、書込は明示的 Apply とハッシュ／ロック／復旧記録で保護します。リンク先メタデータは読取専用です。[設定](docs/CONFIGURATION.md)、[スキル契約](docs/skills.md)に詳細があります。
+Settings の Workspace sources／Projects and runtime は読取と新規作業を即時停止し、履歴を保持します。切断前に Activity の待機／実行作業を完了または停止してください。表示スイッチだけでは探索を停止しません。他の設定済みパスや外部コマンドはファイルにアクセスできます。パス変更は再起動が必要です。スキル管理 `/?view=skills` は名称・説明・分類・参照付き改名プレビューを持ち、書込は明示的 Apply とハッシュ／ロック／復旧記録で保護します。リンク先メタデータは読取専用です。[設定](docs/CONFIGURATION.md)、[スキル契約](docs/skills.md)に詳細があります。
 
 ## ネットワークと検証
 

@@ -43,8 +43,12 @@ export class Workbench {
   }
   async start() {
     if (integrations.connected("projects")) {
-      await this.capture();
-      void this.refresh();
+      try {
+        await integrations.read("projects", () => this.capture());
+        void this.refresh();
+      } catch (error) {
+        if (integrations.connected("projects")) this.error = String(error);
+      }
     }
   }
   private async capture() {

@@ -1,11 +1,11 @@
-# LocalDesk 0.2.1 — prepared source candidate
+# LocalDesk source releases
 
 [简体中文](RELEASE.zh-CN.md) · [繁體中文](RELEASE.zh-TW.md)
 
 Original LocalDesk code and documentation use MIT, Copyright (c) 2026 LocalDesk
 contributors. The bundled modified font and fetched dependencies retain their
 own terms. Preserve LICENSE, NOTICE.md and the entire font/notices directory.
-This preparation does not publish a repository, change remote visibility or
+Creating an export does not publish a repository, change remote visibility or
 operate an installed service.
 
 ## Payload and behavior
@@ -26,7 +26,7 @@ still requires a restart. No model is configured in portable defaults.
 
 ## Reproduce and verify
 
-In the preparation checkout, `deno task source-check --index` reviews named
+In the source checkout, `deno task source-check --index` reviews named
 source/index bytes. `deno task source-export --index` creates a sealed
 directory, a ZIP and a `.zip.sha256` sidecar under ignored
 `Local/public-candidates/`. The ZIP has a fixed `localdesk-source/` root and

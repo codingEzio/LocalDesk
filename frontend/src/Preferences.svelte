@@ -18,7 +18,7 @@ async function loadSources() {
   projectError = !!(await workbench.json()).error;
   scanError = state.catalog.errors.length > 0 || state.catalog.plugins.some((p: any) => p.error);
 }
-onMount(() => { loadSources().catch(() => sourceError = "sourceFailure"); });
+onMount(() => { loadSources().catch(() => sourceError = "sourceUnknown"); });
 async function changeSource(source: any) {
   busy = source.id; sourceError = "";
   let accepted = false;
@@ -26,7 +26,7 @@ async function changeSource(source: any) {
     const response = await fetch("/api/integrations", {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify({id: source.id, connected: !source.connected})});
     const result = await response.json();
     if (!response.ok) {
-      sourceError = result.error.includes("jobs in Activity") ? "sourceJobs" : "sourceFailure";
+      sourceError = result.error.includes("jobs in Activity") ? "sourceJobs" : result.error.includes("change both connections together") ? "sourceOverlap" : "sourceUnknown";
     } else {
       accepted = true;
       sources = result.integrations;
@@ -60,9 +60,15 @@ $: localStorage.setItem("localdesk-start-page", startPage);
     {#each sources as source}
       <div class="source-connection">
         <div><strong>{t(source.id==='workspace'?'sourceWorkspace':'sourceProjects')}</strong><small>{t(!source.connected?'sourceDisconnected':(source.id==='workspace'?scanError:projectError)?'sourceScanError':'sourceConnected')}</small><code>{source.path}</code></div>
-        <button class="inspect-button" data-source={source.id} disabled={!!busy||source.changing||(source.connected&&activeJobs)} onclick={()=>changeSource(source)}>{busy===source.id?t('sourceChanging'):t(source.connected?'sourceDisconnect':'sourceConnect')}</button>
+        <button class="inspect-button" data-source={source.id} disabled={!!busy||source.changing||source.requiresBoth||(source.connected&&activeJobs)} onclick={()=>changeSource(source)}>{busy===source.id?t('sourceChanging'):t(source.connected?'sourceDisconnect':'sourceConnect')}</button>
       </div>
     {/each}
+    <div class="source-connection">
+      <button class="inspect-button" disabled={!!busy || sources.length!==2 || sources.every((source: any)=>source.connected)} onclick={()=>changeSource({id:"both",connected:false})}>{t('sourceConnectBoth')}</button>
+      <button class="inspect-button" disabled={!!busy || activeJobs || sources.length!==2 || sources.every((source: any)=>!source.connected)} onclick={()=>changeSource({id:"both",connected:true})}>{t('sourceDisconnectBoth')}</button>
+    </div>
+    <p class="muted-note">{t('sourceSafety')}</p>
+    {#if sources.some((source: any)=>source.requiresBoth)}<p role="alert">{t('sourceNeedsBoth')}</p>{/if}
     {#if activeJobs}<p class="muted-note">{t('sourceJobs')} <a href="/?view=activity">{t('sourceActivity')}</a></p>{/if}
     {#if sourceError}<p role="alert">{t(sourceError)}</p>{/if}
     <p class="muted-note">{t('sourceRetention')}</p>

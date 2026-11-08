@@ -55,6 +55,24 @@ class PublicSourceTest(unittest.TestCase):
         (exported / "README.md").write_text("changed\n")
         self.assertNotEqual(self.run_source(exported).returncode, 0)
 
+    def test_index_requires_all_source_files_in_manifest(self):
+        canonical = Path(self.temp.name) / "canonical"
+        (canonical / "scripts").mkdir(parents=True)
+        shutil.copyfile(SCRIPT, canonical / "scripts/public_source.py")
+        (canonical / "README.md").write_text("Public fixture\n")
+        names = ["README.md", "public-source.json", "scripts/public_source.py"]
+        (canonical / "public-source.json").write_text(json.dumps({
+            "files": [{"source": name, "target": name} for name in names],
+            "releaseBlockers": [],
+        }))
+        subprocess.run(["git", "init", "-q", str(canonical)], check=True)
+        subprocess.run(["git", "-C", str(canonical), "add", *names], check=True)
+        self.assertEqual(self.run_source(canonical, "--index").returncode, 0)
+        (canonical / "unlisted.txt").write_text("A new source file\n")
+        result = self.run_source(canonical, "--index")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("inventory differs", result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -6,9 +6,10 @@ model/account catalogs, sessions, preferences, runtime settings, deployed
 services and existing workspaces are outside this review. They are neither
 copied nor used as fixtures.
 
-`public-source.json` lists explicit source-to-target mappings. From the
-preparation checkout, `deno task source-check --index` checks selected working
-files against the Git index; `deno task source-export --index` writes an
+`public-source.json` lists the canonical checkout's explicit source paths.
+`deno task source-check --index` checks selected working files against the Git
+index and rejects tracked or unignored files missing from the manifest;
+`deno task source-export --index` writes an
 immutable hash-bound copy, ZIP and SHA-256 sidecar under ignored
 `Local/public-candidates`. ZIP entries, bytes and Unix file modes are read back;
 `--verify-archive PATH --sha256 EXPECTED` also works from an extracted copy
@@ -19,11 +20,10 @@ symlinks is rejected.
 The exported tree omits private task/error history, personal project profile
 overrides and dated account/service acceptance. It retains application source,
 portable profile detection and defaults, synthetic tests, dependency
-lockfiles, font provenance and all notices. Original private files are retained.
-No Git history is exported, rewritten or cleared for release. The source checker
-also works from an exported copy using its target paths: it first verifies the
-receipt, mapping, file hashes and modes, and rejects a mixed preparation tree.
-Changes to a sealed copy require a new candidate. `--index` requires a Git index.
+lockfiles, font provenance and all notices. No Git history is exported, rewritten
+or cleared. The checkout is editable; each source export creates a new receipt.
+An extracted sealed copy is verified against its receipt, hashes and modes and
+rejects mixing with preparation-only files. `--index` requires a Git index.
 
 The exporter also rejects runtime/cache directories, local override names and
 database/key file paths before reading them. Python 3 standard library is

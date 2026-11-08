@@ -25,7 +25,7 @@
   "inspect": "交给代理查看",
   "moduleTitle": "你的工作方式。",
   "moduleCaption": "选择需要的来源；新增模块描述文件后，界面会自动发现。",
-  "moduleHint": "这些开关仅隐藏卡片，来源仍会扫描。请在设置的“来源连接”中拔除，以停止读取。",
+  "moduleHint": "隐藏模块仍会扫描；可在设置中断开来源，暂停该来源的扫描和相关操作。",
   "close": "关闭",
   "commandPlaceholder": "描述你想做的事…",
   "send": "发送指令",
@@ -136,8 +136,8 @@
   "sourceDisconnect": "拔除",
   "sourceConnect": "连接",
   "sourceChanging": "应用中…",
-  "sourceHint": "立即生效并在重启后保留。来源路径由本机配置指定；更换路径需重启。隐藏模块仍会扫描，请在此拔除来源以停止读取。",
-  "sourceRetention": "拔除后不再扫描或用于新工作。已存对话、结果和项目历史保留在本机；重新连接会再次扫描配置的路径。",
+  "sourceHint": "断开会暂停该来源的扫描及相关操作；其他已配置路径或外部命令仍可能访问文件。",
+  "sourceRetention": "已存对话、结果和项目历史保留在本机；重新连接后恢复扫描。",
   "sourceJobs": "请先到活动页完成或停止排队中／运行中的任务，再拔除来源。",
   "sourceActivity": "打开活动页",
   "sourceOffline": "来源已拔除，已存历史仍保留。请在设置中重新连接以使用此来源。",
@@ -145,5 +145,10 @@
   "sourceScanError": "已连接，但来源无法使用。请检查配置路径与扫描错误。",
   "moduleVisibility": "模块显示",
   "sourceRefreshFailed": "连接已保存，但页面无法更新。请重新加载以确认当前来源状态。",
-  "sourceUnknown": "无法确认连接结果。请先重新加载，确认保存状态后重试。"
+  "sourceUnknown": "无法确认连接结果。请先重新加载，确认保存状态后重试。",
+  "sourceConnectBoth": "同时连接",
+  "sourceDisconnectBoth": "同时断开",
+  "sourceOverlap": "两个来源重叠或无法区分，请同时更改两个连接。",
+  "sourceSafety": "技能可能引用两个来源，因此任一来源断开时技能管理会暂停。",
+  "sourceNeedsBoth": "已断开来源的路径发生变化。两处来源已暂停，请选择“同时连接”以核验。"
 }
