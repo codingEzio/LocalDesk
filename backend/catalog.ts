@@ -126,7 +126,10 @@ export class Catalog {
                 next.push(p);
                 continue;
               }
-              const target = resolve(settings.workspace, raw.path);
+              const sourcePath = Object.hasOwn(settings.sourcePaths, raw.id)
+                ? settings.sourcePaths[raw.id]
+                : raw.path;
+              const target = resolve(settings.workspace, sourcePath);
               const rel = relative(settings.workspace, target);
               if (
                 rel.startsWith("..") || rel.startsWith("/") ||
@@ -139,6 +142,7 @@ export class Catalog {
               }
               const p: Plugin = {
                 ...raw,
+                path: sourcePath,
                 enabled: this.preferences[raw.id] ?? raw.enabled !== false,
                 items: [],
               };
@@ -165,7 +169,7 @@ export class Catalog {
                       p.items.push({
                         id: raw.id + ":" + m[1] + ":" + m[2],
                         name: m[2],
-                        path: raw.path,
+                        path: sourcePath,
                         kind: m[1],
                         detail: "Brewfile",
                       });
@@ -187,7 +191,7 @@ export class Catalog {
                     ) {
                       continue;
                     }
-                    const path = join(raw.path, file.name);
+                    const path = join(sourcePath, file.name);
                     const stat = await Deno.lstat(
                       join(settings.workspace, path),
                     );

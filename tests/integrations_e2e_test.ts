@@ -45,6 +45,14 @@ Deno.test("source connections drain reads, preserve data, reject active work and
   for (const name of ["config", "scripts", "skills", "services", "tools"]) {
     await Deno.mkdir(join(workspace, name), { recursive: true });
   }
+  await Deno.mkdir(join(workspace, "Personal", "Settings", "FixtureConfig"), {
+    recursive: true,
+  });
+  await Deno.mkdir(join(workspace, "Personal", "Utilities", "FixtureTool"), {
+    recursive: true,
+  });
+  await Deno.mkdir(join(workspace, "config", "DefaultOnly"));
+  await Deno.mkdir(join(workspace, "tools", "DefaultOnly"));
   await Deno.symlink(workspace, workspaceLink);
   await Deno.writeTextFile(join(workspace, "Brewfile"), 'brew "fixture-one"\n');
   await Deno.mkdir(join(projectsRoot, "X-Fixture"), { recursive: true });
@@ -58,6 +66,15 @@ Deno.test("source connections drain reads, preserve data, reject active work and
     "---\nname: fixture-skill\ndescription: Synthetic fixture\n---\nFixture\n",
   );
   await Deno.mkdir(local);
+  await Deno.writeTextFile(
+    join(local, "settings.local.json"),
+    JSON.stringify({
+      sourcePaths: {
+        configurations: "Personal/Settings",
+        utilities: "Personal/Utilities",
+      },
+    }),
+  );
   const legacyChatId = crypto.randomUUID();
   await Deno.writeTextFile(
     join(local, "chats.json"),
@@ -171,6 +188,20 @@ Deno.test("source connections drain reads, preserve data, reject active work and
       (await api("/api/workbench")).body.snapshot?.projects.length === 1
     );
     const initial = (await api("/api/state")).body;
+    for (
+      const [id, name, path] of [
+        ["configurations", "FixtureConfig", "Personal/Settings"],
+        ["utilities", "FixtureTool", "Personal/Utilities"],
+      ]
+    ) {
+      const module = initial.catalog.plugins.find((p: { id: string }) =>
+        p.id === id
+      );
+      assertEquals(module.path, path);
+      assertEquals(module.items.map((item: { name: string }) => item.name), [
+        name,
+      ]);
+    }
     assert(
       initial.catalog.plugins.find((p: { id: string }) => p.id === "software")
         .items.some((p: { name: string }) => p.name === "fixture-one"),
@@ -417,8 +448,15 @@ Deno.test("source connections drain reads, preserve data, reject active work and
     );
     await stop();
     await start();
+    const restored = (await api("/api/state")).body;
     assertEquals(
-      (await api("/api/state")).body.integrations.map((
+      restored.catalog.plugins.find((p: { id: string }) =>
+        p.id === "configurations"
+      ).items[0].name,
+      "FixtureConfig",
+    );
+    assertEquals(
+      restored.integrations.map((
         s: { connected: boolean },
       ) => s.connected),
       [true, true],

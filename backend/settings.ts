@@ -56,6 +56,7 @@ export type Settings = {
   frontendHost: string;
   shareCatalogOnLan: boolean;
   lanInterfaces: string[];
+  sourcePaths: Record<string, string>;
   runtimeRegistry: string | null;
   codexPath: string;
   modelsFile: string;
@@ -168,6 +169,19 @@ export async function normalizeSettings(
   const value = { ...input };
   value.loc = normalizeLocPolicy(value.loc);
   value.lanInterfaces = normalizeLanInterfaces(value.lanInterfaces);
+  if (value.sourcePaths === undefined) value.sourcePaths = {};
+  if (
+    !value.sourcePaths || typeof value.sourcePaths !== "object" ||
+    Array.isArray(value.sourcePaths) ||
+    Object.keys(value.sourcePaths).length > 100 ||
+    Object.entries(value.sourcePaths).some(([id, path]) =>
+      !/^[a-z][a-z0-9-]{0,40}$/.test(id) || id === "skills" ||
+      typeof path !== "string" || !path || path.length > 1024 ||
+      isAbsolute(path) || path.includes("\\") ||
+      path.split("/").some((part) => part === ".." || part === "") ||
+      /[\x00-\x1f\x7f]/.test(path)
+    )
+  ) throw new Error("Invalid sourcePaths: expected workspace-relative paths");
   function text(key: string): string {
     const result = value[key];
     if (typeof result !== "string" || !result.trim()) {

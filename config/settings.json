@@ -12,6 +12,7 @@
   "frontendHost": "0.0.0.0",
   "shareCatalogOnLan": false,
   "lanInterfaces": [],
+  "sourcePaths": {},
   "runtimeRegistry": null,
   "codexPath": "codex",
   "modelsFile": null,

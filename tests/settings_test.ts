@@ -50,6 +50,7 @@ Deno.test("portable settings resolve checkout-relative paths without creating lo
     assertEquals(settings.approvalMode, "sandbox");
     assertEquals(settings.shareCatalogOnLan, false);
     assertEquals(settings.lanInterfaces, []);
+    assertEquals(settings.sourcePaths, {});
     await assertRejects(
       () => Deno.stat(join(root, "Local")),
       Deno.errors.NotFound,
@@ -237,6 +238,12 @@ Deno.test("settings reject invalid ports, bounds, presets and discovery escapes"
     ["invalid LAN interface type", { lanInterfaces: "wifi" }],
     ["invalid LAN interface name", { lanInterfaces: ["en0/../en1"] }],
     ["duplicate LAN interface", { lanInterfaces: ["en0", "en0"] }],
+    ["invalid source map", { sourcePaths: [] }],
+    ["invalid source module ID", { sourcePaths: { "bad/name": "config" } }],
+    ["skills use separate setting", { sourcePaths: { skills: "config" } }],
+    ["parent source path", { sourcePaths: { configurations: "../outside" } }],
+    ["absolute source path", { sourcePaths: { configurations: "/outside" } }],
+    ["backslash source path", { sourcePaths: { configurations: "bad\\path" } }],
     ["parent discovery path", { discoveryDirectories: ["../private"] }],
     ["absolute discovery path", { discoveryDirectories: ["/private"] }],
   ];
