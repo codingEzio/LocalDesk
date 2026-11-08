@@ -244,6 +244,7 @@ Deno.test("settings reject invalid ports, bounds, presets and discovery escapes"
     ["parent source path", { sourcePaths: { configurations: "../outside" } }],
     ["absolute source path", { sourcePaths: { configurations: "/outside" } }],
     ["backslash source path", { sourcePaths: { configurations: "bad\\path" } }],
+    ["control source path", { sourcePaths: { configurations: "bad\npath" } }],
     ["parent discovery path", { discoveryDirectories: ["../private"] }],
     ["absolute discovery path", { discoveryDirectories: ["/private"] }],
   ];

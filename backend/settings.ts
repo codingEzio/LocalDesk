@@ -179,7 +179,7 @@ export async function normalizeSettings(
       typeof path !== "string" || !path || path.length > 1024 ||
       isAbsolute(path) || path.includes("\\") ||
       path.split("/").some((part) => part === ".." || part === "") ||
-      /[\x00-\x1f\x7f]/.test(path)
+      [...path].some((c) => c.charCodeAt(0) < 32 || c.charCodeAt(0) === 127)
     )
   ) throw new Error("Invalid sourcePaths: expected workspace-relative paths");
   function text(key: string): string {

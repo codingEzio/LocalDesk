@@ -187,6 +187,7 @@ Deno.test("source connections drain reads, preserve data, reject active work and
     await wait(async () =>
       (await api("/api/workbench")).body.snapshot?.projects.length === 1
     );
+    await wait(async () => !!(await api("/api/state")).body.catalog.scannedAt);
     const initial = (await api("/api/state")).body;
     for (
       const [id, name, path] of [
@@ -448,6 +449,7 @@ Deno.test("source connections drain reads, preserve data, reject active work and
     );
     await stop();
     await start();
+    await wait(async () => !!(await api("/api/state")).body.catalog.scannedAt);
     const restored = (await api("/api/state")).body;
     assertEquals(
       restored.catalog.plugins.find((p: { id: string }) =>
@@ -461,6 +463,20 @@ Deno.test("source connections drain reads, preserve data, reject active work and
       ) => s.connected),
       [true, true],
     );
+    await stop();
+    // A private override cannot use a symlink to escape its workspace.
+    await Deno.symlink(base, join(workspace, "external-link"));
+    await Deno.writeTextFile(
+      join(local, "settings.local.json"),
+      JSON.stringify({ sourcePaths: { configurations: "external-link" } }),
+    );
+    await start();
+    await wait(async () => !!(await api("/api/state")).body.catalog.scannedAt);
+    const escaped = (await api("/api/state")).body.catalog.plugins.find((
+      p: { id: string },
+    ) => p.id === "configurations");
+    assert(escaped.error.includes("Source symlink escapes"));
+    assertEquals(escaped.items, []);
     await stop();
     // Exercise a held reader and the timeout branch without a 30-second sleep.
     await Deno.writeTextFile(
