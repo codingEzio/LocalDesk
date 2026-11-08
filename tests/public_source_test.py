@@ -26,6 +26,8 @@ class PublicSourceTest(unittest.TestCase):
         ]
         files.sort(key=lambda row: row["source"])
         (self.root / "public-source.json").write_text(json.dumps({"files": files, "releaseBlockers": []}))
+        for path in ["README.md", "public/README.md", "public-source.json", "scripts/public_source.py"]:
+            (self.root / path).chmod(0o644)
 
     def tearDown(self):
         self.temp.cleanup()
@@ -65,6 +67,8 @@ class PublicSourceTest(unittest.TestCase):
             "files": [{"source": name, "target": name} for name in names],
             "releaseBlockers": [],
         }))
+        for name in names:
+            (canonical / name).chmod(0o644)
         subprocess.run(["git", "init", "-q", str(canonical)], check=True)
         subprocess.run(["git", "-C", str(canonical), "add", *names], check=True)
         self.assertEqual(self.run_source(canonical, "--index").returncode, 0)
