@@ -118,6 +118,45 @@ Deno.test("line-count policy reaches the persisted workbench statistics", async 
   }
 });
 
+Deno.test("switching exclusions invalidates equal-size equal-time file selections", async () => {
+  const root = Deno.makeTempDirSync();
+  try {
+    writeFile(root, "Sources/A.swift", "x\nx\n");
+    writeFile(root, "Sources/B.swift", "xxx\n");
+    const timestamp = new Date("2026-01-01T00:00:00.000Z");
+    for (const name of ["A.swift", "B.swift"]) {
+      Deno.utimeSync(join(root, "Sources", name), timestamp, timestamp);
+    }
+    const policy = {
+      profiles: { Example: "swift-spm" as const },
+      skipProjects: [],
+      skipPrefixes: [],
+      excludePaths: { Example: ["Sources/B.swift"] },
+    };
+    const first = await countProject(
+      "Example",
+      root,
+      undefined,
+      undefined,
+      policy,
+    );
+    assertEquals(first?.core, 2);
+    policy.excludePaths.Example = ["Sources/A.swift"];
+    const second = await countProject(
+      "Example",
+      root,
+      first ?? undefined,
+      undefined,
+      policy,
+    );
+    assertEquals(second?.core, 1);
+    assertEquals(second?.fingerprint.includes("Sources/A.swift"), false);
+    assertEquals(second?.fingerprint.includes("Sources/B.swift"), false);
+  } finally {
+    Deno.removeSync(root, { recursive: true });
+  }
+});
+
 Deno.test("countProject splits core and test and never reads vendor trees", async () => {
   const root = Deno.makeTempDirSync();
   try {

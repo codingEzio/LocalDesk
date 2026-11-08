@@ -1,4 +1,5 @@
 import { basename, join } from "node:path";
+import { createHash } from "node:crypto";
 import {
   classifyPart,
   classifyPath,
@@ -254,13 +255,23 @@ function fingerprint(
   profile: LocProfileId,
   files: CountedFile[],
 ): string {
-  let bytes = 0;
-  let mtime = 0;
+  // File identity matters when two selections have equal sizes and timestamps.
+  // Only the digest is stored; configured paths do not appear in the cache key.
+  const hash = createHash("sha256");
+  hash.update(JSON.stringify([profile]));
   for (const file of files) {
-    bytes += file.size;
-    if (file.mtime > mtime) mtime = file.mtime;
+    hash.update(
+      "\0" +
+        JSON.stringify([
+          file.relative,
+          file.size,
+          file.mtime,
+          file.kind,
+          file.part,
+        ]),
+    );
   }
-  return `${profile}:${files.length}:${bytes}:${mtime}`;
+  return `${profile}:${hash.digest("hex")}`;
 }
 
 function partsFrom(
