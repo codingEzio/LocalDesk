@@ -94,6 +94,7 @@ $: t = (key: string) =>
   (copy as any)[lang]?.[key] ?? copy.en[key as keyof typeof copy.en] ?? key;
 $: projects = data?.snapshot?.projects ?? [];
 $: if (data?.connected === false) { selectedName = ""; drawer = false; }
+$: if (agentState?.readOnly && (filter === "web" || filter === "native")) filter = "all";
 $: selected = projects.find((p: any) => p.name === selectedName);
 $: matches = projects.filter((p: any) =>
   query.toLowerCase().trim().split(/\s+/).filter(Boolean).every((token) =>
@@ -480,7 +481,7 @@ onMount(() => {
    </div>
   </header>
   <section class="wb-heading"><div><div class="wb-display"><DotWord text="WORK"/></div><h1>{t('title')}</h1><p>{t('subtitle')}</p></div><div class="wb-stats"><strong>{number(projects.length)}</strong><span>{t('total')}</span><small>{number(dirty)} {t('changedTotal')}</small></div></section>
-  <div class="wb-tools"><div class="wb-filters" aria-label={t('projects')}>{#each ['all','changed','web','native'] as f}<button class:active={filter===f} aria-pressed={filter===f} onclick={()=>filter=f}>{t(f)}</button>{/each}</div><label class="wb-search"><Search size={15}/><input id="workbench-search" aria-label={t('search')} placeholder={t('search')} bind:value={query}/><kbd>⌘K</kbd></label><button class="wb-refresh" class:busy={refreshing} aria-label={t('refresh')} onclick={refreshProjects} disabled={refreshing||!agentState?.canControl}><RefreshCw size={16}/></button></div>
+  <div class="wb-tools"><div class="wb-filters" aria-label={t('projects')}>{#each (agentState && !agentState.readOnly ? ['all','changed','web','native'] : ['all','changed']) as f}<button class:active={filter===f} aria-pressed={filter===f} onclick={()=>filter=f}>{t(f)}</button>{/each}</div><label class="wb-search"><Search size={15}/><input id="workbench-search" aria-label={t('search')} placeholder={t('search')} bind:value={query}/><kbd>⌘K</kbd></label><button class="wb-refresh" class:busy={refreshing} aria-label={t('refresh')} onclick={refreshProjects} disabled={refreshing||!agentState?.canControl}><RefreshCw size={16}/></button></div>
   {#if error||data?.stale}<div class="wb-warning" role="status">{error?t('error'):data?.snapshot?t('stale'):t('noSnapshot')}<small>{error||data?.error}</small></div>{/if}
   <div class="wb-board" class:tight bind:this={board} style={`--columns:${columns};--rows:${rows}`}>
    {#each matches as p,i (p.name)}
