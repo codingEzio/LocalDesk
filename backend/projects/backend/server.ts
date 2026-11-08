@@ -99,6 +99,8 @@ export function createApp(options: AppOptions) {
         Math.max(0, Math.round(performance.now() - t0)),
       );
       await options.runtime?.refresh(rows.map((row) => row.name));
+      // Direct scanNow callers and HTTP scans must both see the new snapshot.
+      cachedProjects = null;
       if (!closed && loc) {
         loc.refresh(rows.map((row) => ({ name: row.name, path: row.path })))
           .catch(() => {});
@@ -126,7 +128,6 @@ export function createApp(options: AppOptions) {
     }
     if (request.method === "POST" && url.pathname === "/api/scan") {
       await scanNow();
-      cachedProjects = null;
       return json(currentProjects());
     }
     return new Response("Not found", { status: 404 });

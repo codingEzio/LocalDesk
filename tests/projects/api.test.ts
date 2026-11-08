@@ -82,6 +82,38 @@ Deno.test("GET /api/projects reads the snapshot and does not scan", async () => 
   }
 });
 
+Deno.test("direct scan invalidates a previously cached empty project list", async () => {
+  const store = new ProjectStore(":memory:");
+  const app = createApp({
+    store,
+    root: "/synthetic",
+    rescanMs: 0,
+    pathExists: () => true,
+    scan: () =>
+      Promise.resolve([{
+        name: "Example",
+        path: "/synthetic/Example",
+        is_git: false,
+        has_remote: false,
+        is_dirty: false,
+        is_unpushed: false,
+        has_multiple_branches: false,
+      }]),
+  });
+  try {
+    const request = () => new Request("http://localhost/api/projects");
+    assertEquals((await (await app.fetch(request())).json()).projects, []);
+    await app.scanNow();
+    assertEquals(
+      (await (await app.fetch(request())).json()).projects[0].name,
+      "Example",
+    );
+  } finally {
+    app.close();
+    store.close();
+  }
+});
+
 Deno.test("POST /api/scan writes a new snapshot from disk", async () => {
   const root = await fixtureRoot();
   const store = new ProjectStore(":memory:");
