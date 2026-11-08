@@ -7,7 +7,6 @@ import { resolve } from "node:path";
 import { Readable } from "node:stream";
 import { fileURLToPath } from "node:url";
 import { createWebHandler } from "../backend/web.ts";
-import { createLanPolicy } from "../backend/lan_network.ts";
 import { normalizeLanInterfaces } from "../backend/settings.ts";
 import { dataDirectory, settingsOverride } from "../backend/runtime_paths.ts";
 
@@ -68,18 +67,6 @@ export default defineConfig({
   }, {
     name: "localdesk-private-api",
     configureServer(server) {
-      const localAddresses = [
-        "127.0.0.1",
-        "::1",
-        "::ffff:127.0.0.1",
-        ...Object.values(networkInterfaces()).flatMap((entries) =>
-          entries?.flatMap((entry) =>
-            entry.family === "IPv4"
-              ? [entry.address, `::ffff:${entry.address}`]
-              : [entry.address]
-          ) ?? []
-        ),
-      ];
       server.middlewares.use((incoming, outgoing, next) => {
         const path = incoming.url?.split("?")[0] ?? "";
         if (
@@ -96,20 +83,17 @@ export default defineConfig({
           const handler = createWebHandler({
             token,
             frontendPort: settings.frontendPort,
-            localAddresses,
+            localAddresses: ["127.0.0.1", "::1", "::ffff:127.0.0.1"],
             shareCatalogOnLan: settings.shareCatalogOnLan === true,
-            isLanPeer: createLanPolicy(
-              lanInterfaces,
-              () =>
-                Object.entries(networkInterfaces()).flatMap(([name, entries]) =>
-                  entries?.map(({ address, cidr }) => ({
-                    name,
-                    address,
-                    cidr,
-                  })) ??
-                    []
-                ),
-            ),
+            lanInterfaces,
+            networkInterfaces: () =>
+              Object.entries(networkInterfaces()).flatMap(([name, entries]) =>
+                entries?.map(({ address, cidr }) => ({
+                  name,
+                  address,
+                  cidr,
+                })) ?? []
+              ),
             async fetch(request) {
               const url = new URL(request.url);
               const target = new URL(

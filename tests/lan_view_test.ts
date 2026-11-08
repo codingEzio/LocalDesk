@@ -3,7 +3,6 @@ import { join } from "node:path";
 import { lanState, lanWorkbench } from "../backend/lan_view.ts";
 import { createStaticApp } from "../backend/static-web.ts";
 import { createWebHandler } from "../backend/web.ts";
-import { createLanPolicy } from "../backend/lan_network.ts";
 
 Deno.test("LAN project view admits only explicit project and Git fields", () => {
   const project = {
@@ -152,13 +151,14 @@ Deno.test("real LAN proxy and backend hide private catalog and deny writes", asy
     const proxy = createWebHandler({
       token,
       frontendPort,
-      localAddresses: ["127.0.0.1", "192.0.2.1"],
+      localAddresses: ["127.0.0.1"],
       shareCatalogOnLan: true,
-      isLanPeer: createLanPolicy(["wifi"], () => [{
+      lanInterfaces: ["wifi"],
+      networkInterfaces: () => [{
         name: "wifi",
         address: "192.0.2.1",
         cidr: "192.0.2.1/24",
-      }]),
+      }],
       fetch: app.fetch,
     });
     const remote = (path: string, init?: RequestInit) =>

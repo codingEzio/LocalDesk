@@ -94,6 +94,8 @@ deno task setup --model MODEL_ID --effort EFFORT
 `config/settings.json` 儲存可攜的預設值；忽略的 `<data>/settings.local.json`
 儲存個人覆寫設定。`LOCALDESK_CONFIG` 可指定另一個覆寫檔案，取代該本機檔案。
 機密資訊、工作、記錄和 SQLite 資料應放在受追蹤原始碼之外。
+可在私人設定中用 `sourcePaths` 為各模組指定工作區內的相對路徑；技能來源另在
+`skills.local.json` 設定。
 
 介面預設監聽 LAN，但除非明確啟用 `shareCatalogOnLan`，**所有資料 API 都僅供本機
 用戶端存取**。啟用分享還須在 `lanInterfaces` 指定網路介面（例如 Mac Wi-Fi 的
@@ -102,6 +104,8 @@ deno task setup --model MODEL_ID --effort EFFORT
 讀取這些專案資訊。遠端裝置開啟 `/workbench`。未知 Host 和外部 Origin
 請求會被拒絕；前端不會信任傳入的 Authorization 標頭。不要透過會讓遠端用戶端看起來像本機的反向代理
 公開此服務。
+本機聊天和操作請開啟 `http://localhost:10000`（或設定的連接埠）；透過 LAN 位址
+存取即使在本機也是唯讀。
 
 獨立的 `process-compose.yaml` 監管兩個 HTTP 程序，處理重新啟動與關閉。不使用
 HTTP readiness/liveness probes。`deno task service --dry-run` 在忽略的

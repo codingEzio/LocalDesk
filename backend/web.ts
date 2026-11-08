@@ -1,29 +1,39 @@
 import { createStaticApp } from "./static-web.ts";
 import { localOriginPolicy } from "./origin.ts";
-import { createLanPolicy } from "./lan_network.ts";
+import {
+  createLanPolicy,
+  type InterfaceAddress,
+  isLoopbackPeer,
+} from "./lan_network.ts";
 
 type WebOptions = {
   token: string;
   frontendPort: number;
   localAddresses: string[];
   shareCatalogOnLan: boolean;
-  isLanPeer?: (peer: string, target: string) => boolean;
+  lanInterfaces?: string[];
+  networkInterfaces?: () => InterfaceAddress[];
   fetch: (request: Request) => Promise<Response>;
 };
 
 /** The public listener never delegates local authority to a remote peer. */
 export function createWebHandler(options: WebOptions) {
-  const normalizeHost = (host: string) => host.replace(/^\[|\]$/g, "");
-  const localAddresses = new Set(options.localAddresses.map(normalizeHost));
   const reject = (error: string) =>
     Response.json({ error }, {
       status: 403,
       headers: { "cache-control": "no-store", "x-frame-options": "DENY" },
     });
-  const trustedOrigin = localOriginPolicy(options.frontendPort, [
-    ...localAddresses,
-  ]);
   return async (req: Request, peerAddress: string): Promise<Response> => {
+    // Use one current snapshot for host, origin and LAN membership. Only
+    // loopback receives local authority even if an interface IP is recycled.
+    let interfaces: InterfaceAddress[] = [];
+    try {
+      interfaces = options.networkInterfaces?.() ?? [];
+    } catch { /* No interface information means no remote access. */ }
+    const trustedOrigin = localOriginPolicy(options.frontendPort, [
+      ...options.localAddresses,
+      ...interfaces.map((item) => item.address),
+    ]);
     const url = new URL(req.url);
     if (!trustedOrigin(url.origin)) return reject("Unknown host");
     // Deno normally derives request.url from Host; keep this explicit for adapters.
@@ -35,7 +45,7 @@ export function createWebHandler(options: WebOptions) {
     if (origin !== null && !trustedOrigin(origin)) {
       return reject("Local origin required");
     }
-    const isLocal = localAddresses.has(normalizeHost(peerAddress));
+    const isLocal = isLoopbackPeer(peerAddress);
     const headers = new Headers(req.headers);
     headers.delete("authorization");
     if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {
@@ -43,7 +53,10 @@ export function createWebHandler(options: WebOptions) {
         (url.pathname === "/api/state" || url.pathname === "/api/workbench");
       if (
         !isLocal && !(options.shareCatalogOnLan && readOnlyCatalog &&
-          options.isLanPeer?.(peerAddress, url.hostname))
+          createLanPolicy(options.lanInterfaces ?? [], () => interfaces)(
+            peerAddress,
+            url.hostname,
+          ))
       ) {
         return reject(
           "Open localhost on the LocalDesk host to access local data",
@@ -74,13 +87,10 @@ if (import.meta.main) {
       "127.0.0.1",
       "::1",
       "::ffff:127.0.0.1",
-      ...Deno.networkInterfaces().map((n) => n.address),
     ],
     shareCatalogOnLan: settings.shareCatalogOnLan,
-    isLanPeer: createLanPolicy(
-      settings.lanInterfaces,
-      () => Deno.networkInterfaces(),
-    ),
+    lanInterfaces: settings.lanInterfaces,
+    networkInterfaces: () => Deno.networkInterfaces(),
     fetch: app.fetch,
   });
   const server = Deno.serve({

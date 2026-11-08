@@ -74,13 +74,14 @@ Deno.test("explicit LAN sharing exposes only known read-only catalog routes with
   const handler = createWebHandler({
     token: "synthetic-token",
     frontendPort: 4100,
-    localAddresses: ["127.0.0.1", "192.0.2.1"],
+    localAddresses: ["127.0.0.1"],
     shareCatalogOnLan: true,
-    isLanPeer: createLanPolicy(["wifi"], () => [{
+    lanInterfaces: ["wifi"],
+    networkInterfaces: () => [{
       name: "wifi",
       address: "192.0.2.1",
       cidr: "192.0.2.1/24",
-    }]),
+    }],
     fetch: (request) => {
       forwarded.push(request);
       return Promise.resolve(new Response("ok"));
@@ -124,15 +125,17 @@ Deno.test("LAN access requires a current selected interface and its actual subne
     { name: "wifi", address: "192.0.2.1", cidr: "192.0.2.1/24" },
     { name: "wifi", address: "fd12:abcd::1", cidr: "fd12:abcd::1/64" },
     { name: "wifi", address: "fe80::1", cidr: "fe80::1/64" },
+    { name: "wifi", address: "169.254.2.1", cidr: "169.254.2.1/16" },
     { name: "bridge", address: "10.8.0.1", cidr: "10.8.0.1/24" },
   ];
   const policy = createLanPolicy(["wifi"], () => interfaces);
   const handler = createWebHandler({
     token: "private-token",
     frontendPort: 4100,
-    localAddresses: ["127.0.0.1", ...interfaces.map((item) => item.address)],
+    localAddresses: ["127.0.0.1"],
     shareCatalogOnLan: true,
-    isLanPeer: policy,
+    lanInterfaces: ["wifi"],
+    networkInterfaces: () => interfaces,
     fetch: () => Promise.resolve(new Response("ok")),
   });
   const request = (host: string, peer: string, headers?: HeadersInit) =>
@@ -154,6 +157,7 @@ Deno.test("LAN access requires a current selected interface and its actual subne
       ["[fd12:abcd::1]", "fd12:abce::2"],
       ["[fd12:abcd::1]", "fe80::2%wifi"],
       ["[fe80::1]", "fe80::2"],
+      ["169.254.2.1", "169.254.2.2"],
     ]
   ) {
     assertEquals(
@@ -189,6 +193,41 @@ Deno.test("LAN access requires a current selected interface and its actual subne
   interfaces[0] = { name: "wifi", address: "192.0.3.1", cidr: "192.0.3.1/24" };
   assertEquals(policy("192.0.2.7", "192.0.2.1"), false);
   assertEquals(policy("192.0.3.7", "192.0.3.1"), true);
+  // A recycled old host address must not become local authority, even with a
+  // forged loopback Host/Origin or Authorization after a network change.
+  assertEquals(
+    (await handler(
+      new Request("http://localhost:4100/api/integrations", {
+        method: "POST",
+        headers: {
+          origin: "http://localhost:4100",
+          authorization: "Bearer private-token",
+          "x-forwarded-for": "127.0.0.1",
+        },
+      }),
+      "192.0.2.1",
+    )).status,
+    403,
+  );
+  assertEquals((await request("192.0.2.1", "192.0.2.7")).status, 403);
+  assertEquals((await request("192.0.3.1", "192.0.3.7")).status, 200);
+  interfaces.push({
+    name: "bridge",
+    address: "192.0.3.2",
+    cidr: "192.0.3.2/24",
+  });
+  assertEquals((await request("192.0.3.1", "192.0.3.7")).status, 403);
+  interfaces.pop();
+  assertEquals(
+    (await handler(
+      new Request("http://localhost:4100/api/integrations", {
+        method: "POST",
+        headers: { origin: "http://localhost:4100" },
+      }),
+      "127.0.0.1",
+    )).status,
+    200,
+  );
   assertEquals(
     createLanPolicy(["wifi"], () => {
       throw Error("unavailable");

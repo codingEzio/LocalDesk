@@ -33,12 +33,18 @@ function withSkillsSources<T>(action: () => Promise<T>): Promise<T> {
 }
 void workbench.start();
 let jobsReady = false;
-const allowedOrigin = localOriginPolicy(ports.frontend, [
-  "127.0.0.1",
-  "::1",
-  "::ffff:127.0.0.1",
-  ...Deno.networkInterfaces().map((n) => n.address),
-]);
+const allowedOrigin = (origin: string) => {
+  let addresses: string[] = [];
+  try {
+    addresses = Deno.networkInterfaces().map((n) => n.address);
+  } catch { /* Preserve loopback when interface information is unavailable. */ }
+  return localOriginPolicy(ports.frontend, [
+    "127.0.0.1",
+    "::1",
+    "::ffff:127.0.0.1",
+    ...addresses,
+  ])(origin);
+};
 let runner: unknown = { name: settings.preset, ready: false };
 async function refreshRunner() {
   try {

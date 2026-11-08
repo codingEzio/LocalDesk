@@ -90,6 +90,8 @@ CLI 就绪前，发送功能保持禁用。缺少或不支持的模型会明确�
 `config/settings.json` 保存可移植默认值；忽略的 `<data>/settings.local.json`
 保存个人覆盖配置。`LOCALDESK_CONFIG` 可指定另一个覆盖文件，替代该本地文件。
 秘密信息、任务、日志和 SQLite 记录应放在受跟踪源码之外。
+可在私人设置中用 `sourcePaths` 为各模块指定工作区内的相对路径；技能来源另在
+`skills.local.json` 配置。
 
 界面默认监听 LAN，但除非明确启用 `shareCatalogOnLan`，**所有数据 API 都仅供本机
 客户端访问**。启用共享还须在 `lanInterfaces` 指定网络接口（例如 Mac Wi-Fi 的
@@ -98,6 +100,8 @@ CLI 就绪前，发送功能保持禁用。缺少或不支持的模型会明确�
 读取这些项目信息。远程设备访问 `/workbench`。未知 Host 和外部 Origin
 请求会被拒绝；前端不会信任传入的
 Authorization 头。不要通过会让远端客户端看起来像本机的反向代理暴露此服务。
+本机聊天和操作请访问 `http://localhost:10000`（或配置的端口）；通过 LAN 地址
+访问即使在本机也是只读。
 
 独立的 `process-compose.yaml` 监管两个 HTTP 进程，处理重启与关闭。不使用 HTTP
 readiness/liveness probes。`deno task service --dry-run` 在忽略的

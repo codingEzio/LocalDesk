@@ -107,6 +107,8 @@ resolution, limits and precedence. `config/settings.json` contains portable
 defaults; private `<data>/settings.local.json` holds personal overrides.
 `LOCALDESK_CONFIG` selects a different override instead of that local file.
 Secrets, jobs, logs and SQLite records belong outside the tracked source.
+Use `sourcePaths` in the private settings file to map module IDs to paths inside
+your workspace; configure the skills source separately in `skills.local.json`.
 
 The shell binds LAN by default, but **all data APIs are local-peer-only** unless
 `shareCatalogOnLan` is enabled and `lanInterfaces` names the network interfaces
@@ -116,6 +118,8 @@ access. Sharing exposes only the read-only project list, including paths and Git
 status; source inventories, model settings, jobs, chats and mutations remain
 local. Remote visitors open `/workbench`. Network access is not authentication:
 any device on an allowed subnet can read these project details.
+Use `http://localhost:10000` (or your configured port) on the host for chats
+and controls. An address on the LAN is read-only even on the host itself.
 Unknown Host and foreign Origin requests are rejected;
 incoming Authorization headers are not trusted by the frontend. Do not expose
 this service through a reverse proxy that makes remote clients look local.
