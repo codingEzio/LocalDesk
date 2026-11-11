@@ -66,6 +66,29 @@ Deno.test("runtime facts show ports, independent reachability, and an actually l
   assertEquals(facts.management.restart, "configured");
 });
 
+Deno.test("system runtime reads the daemon plist and checks the system launch domain", async () => {
+  let domain = "";
+  let readDaemon = false;
+  const base = dependencies();
+  const facts = await runtimeFactsFor(
+    { ...entry, runtime: { ...entry.runtime, launchDomain: "system" } },
+    "/home/example/projects",
+    dependencies({
+      readText: (path) => {
+        if (path.startsWith("/Library/LaunchDaemons/")) readDaemon = true;
+        return base.readText(path);
+      },
+      launchctl: (label, launchDomain) => {
+        domain = launchDomain ?? "";
+        return base.launchctl(label, launchDomain);
+      },
+    }),
+  );
+  assertEquals(readDaemon, true);
+  assertEquals(domain, "system");
+  assertEquals(facts.management.state, "managed");
+});
+
 Deno.test("management does not call a plist-only web project supervised", async () => {
   const management = await inspectManagement(
     entry,

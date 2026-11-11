@@ -45,9 +45,12 @@ export type RuntimeFacts = {
 
 export type RuntimeDependencies = {
   readText: (path: string) => Promise<string>;
-  launchctl: (label: string) => Promise<{ ok: boolean; stdout: string }>;
+  launchctl: (
+    label: string,
+    domain?: "gui" | "system",
+  ) => Promise<{ ok: boolean; stdout: string }>;
   probe: (port: number, role: "frontend" | "backend") => Promise<Reachability>;
-  launchAgentPath?: (label: string) => string;
+  launchAgentPath?: (label: string, domain?: "gui" | "system") => string;
 };
 
 export type RuntimeProvider = {
@@ -213,13 +216,16 @@ export async function inspectManagement(
   }
 
   const composePath = resolve(workspaceRoot, composeFile);
-  const plistPath = dependencies.launchAgentPath?.(launchAgentLabel) ??
-    join(
-      homeDirectory(),
-      "Library",
-      "LaunchAgents",
-      `${launchAgentLabel}.plist`,
-    );
+  const domain = entry.runtime.launchDomain ?? "gui";
+  const plistPath = dependencies.launchAgentPath?.(launchAgentLabel, domain) ??
+    (domain === "system"
+      ? join("/Library/LaunchDaemons", `${launchAgentLabel}.plist`)
+      : join(
+        homeDirectory(),
+        "Library",
+        "LaunchAgents",
+        `${launchAgentLabel}.plist`,
+      ));
   let compose: string;
   let plist: string;
   try {
@@ -245,7 +251,7 @@ export async function inspectManagement(
     : "missing";
   let manager: ManagerState;
   try {
-    const loaded = await dependencies.launchctl(launchAgentLabel);
+    const loaded = await dependencies.launchctl(launchAgentLabel, domain);
     if (!loaded.ok) manager = "not_loaded";
     else if (!loadedManagerMatches(loaded.stdout, composePath)) {
       manager = "unknown";
@@ -371,12 +377,17 @@ function configFlag(value: string | undefined): boolean {
 function systemDependencies(): RuntimeDependencies {
   return {
     readText: (path) => Deno.readTextFile(path),
-    launchctl: async (label) => {
-      const uid = await boundedCommandOutput("/usr/bin/id", ["-u"]);
-      if (!uid.success) throw new Error("cannot read uid");
+    launchctl: async (label, domain = "gui") => {
+      const uid = domain === "gui"
+        ? await boundedCommandOutput("/usr/bin/id", ["-u"])
+        : null;
+      if (uid && !uid.success) throw new Error("cannot read uid");
+      const target = domain === "system"
+        ? `system/${label}`
+        : `gui/${new TextDecoder().decode(uid!.stdout).trim()}/${label}`;
       const result = await boundedCommandOutput("/bin/launchctl", [
         "print",
-        `gui/${new TextDecoder().decode(uid.stdout).trim()}/${label}`,
+        target,
       ]);
       return {
         ok: result.success,

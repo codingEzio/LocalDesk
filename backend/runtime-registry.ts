@@ -26,6 +26,7 @@ export type PortProject = {
     kind: "web" | "native" | "none";
     composeFile: string | null;
     launchAgentLabel: string | null;
+    launchDomain?: "gui" | "system";
   };
   note?: string;
 };
@@ -57,6 +58,9 @@ function project(value: unknown): value is PortProject {
     ["web", "native", "none"].includes(String(value.runtime.kind)) &&
     textOrNull(value.runtime.composeFile) &&
     textOrNull(value.runtime.launchAgentLabel) &&
+    (value.runtime.launchDomain === undefined ||
+      value.runtime.launchDomain === "gui" ||
+      value.runtime.launchDomain === "system") &&
     (value.note === undefined || typeof value.note === "string");
 }
 
